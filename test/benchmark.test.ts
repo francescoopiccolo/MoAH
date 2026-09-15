@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { resolve } from "node:path";
 import { createServer } from "node:http";
-import { writeFile } from "node:fs/promises";
+import { writeFile, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { checkedPath, runBenchmark, runBounded, summarizeUsage, readMemorySamples } from "../src/benchmark.js";
 import { writeJson } from "../src/config.js";
@@ -76,7 +76,7 @@ test("Windows memory sampler observes the process tree and persists partial outp
     `);
     const run = await runBounded(process.execPath, ["-e", "const {spawn}=require('node:child_process');spawn(process.execPath,['sample-child.cjs'],{stdio:'inherit'}).once('exit',code=>process.exitCode=code??1);console.log('started');"], tmp.path, 20000,
       { stdoutFile: join(tmp.path, "out"), stderrFile: join(tmp.path, "err"), memoryFile });
-    assert.equal(run.code, 0); assert.match(run.stdout, /started/);
+    assert.equal(run.code, 0, await readFile(memoryFile, "utf8").catch(() => "Sampler produced no output")); assert.match(run.stdout, /started/);
     const memory = await readMemorySamples(memoryFile);
     assert.ok(memory.samples > 0); assert.ok(memory.sampledPeakWorkingSetBytes! > 32 * 1024 ** 2);
   } finally { await tmp.cleanup(); }

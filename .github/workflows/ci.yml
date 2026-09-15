@@ -13,5 +13,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - name: Inspect Windows sampler environment
+        run: powershell.exe -NoProfile -NonInteractive -Command "Get-ExecutionPolicy -List; Get-CimInstance Win32_Process -Property ProcessId,ParentProcessId,WorkingSetSize,PrivatePageCount | Select-Object -First 1 ProcessId,ParentProcessId,WorkingSetSize,PrivatePageCount | Format-List"
       - run: npm test
       - run: npm pack --ignore-scripts --dry-run

@@ -35,8 +35,14 @@ export async function runBounded(command: string, args: string[], cwd: string, t
   const child = spawn(command, args, { cwd, windowsHide: true, stdio: ["ignore", "pipe", "pipe"] });
   const monitorScript = [new URL("../scripts/measure-tree.ps1", import.meta.url), new URL("../../scripts/measure-tree.ps1", import.meta.url)].find(p => existsSync(p));
   const monitor = process.platform === "win32" && capture?.memoryFile && child.pid && monitorScript
-    ? spawn("powershell.exe", ["-NoProfile", "-NonInteractive", "-File", fileURLToPath(monitorScript), "-RootProcessId", String(child.pid), "-OutputPath", capture.memoryFile], { windowsHide: true, stdio: "ignore" }) : undefined;
-  monitor?.on("error", () => {});
+    ? spawn("powershell.exe", ["-NoProfile", "-NonInteractive", "-File", fileURLToPath(monitorScript), "-RootProcessId", String(child.pid), "-OutputPath", capture.memoryFile], { windowsHide: true, stdio: ["ignore", "ignore", "pipe"] }) : undefined;
+  const monitorFailure = (detail: string) => {
+    if (capture?.memoryFile) appendFileSync(capture.memoryFile, JSON.stringify({ error: "Memory monitor failed", detail }) + "\n");
+  };
+  let monitorStderr = "";
+  monitor?.stderr?.on("data", chunk => { monitorStderr = (monitorStderr + chunk.toString()).slice(0, 4096); });
+  monitor?.on("error", error => monitorFailure(error.message));
+  monitor?.on("close", code => { if (code !== null && code !== 0) monitorFailure(monitorStderr || `Exit code ${code}`); });
   let stdout = "", stderr = "", timedOut = false;
   const stop = () => {
     if (process.platform === "win32" && child.pid) {
