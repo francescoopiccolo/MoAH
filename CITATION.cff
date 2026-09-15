@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use MoAH, cite this software and its accompanying technical report."
+title: "MoAH: Mixture of Agent Harness"
+type: software
+version: 0.1.0
+date-released: 2026-09-15
+authors:
+  - name: "MoAH contributors"
+repository-code: "https://github.com/francescoopiccolo/MoAH"
+url: "https://github.com/francescoopiccolo/MoAH/blob/codex/pi-router/paper/MoAH.md"
+license: MIT
+abstract: "Phase-adaptive capability selection and demand-loaded tool execution on original Pi. Research preview with separated real-model and controlled measurements."

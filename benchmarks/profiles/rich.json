@@ -1,0 +1,75 @@
+{
+  "selection": {
+    "maxActiveTools": 6,
+    "catalogPageSize": 40,
+    "descriptionCharacters": 200,
+    "resetOnPrompt": true,
+    "releaseInactive": true
+  },
+  "router": {
+    "enabled": false,
+    "model": "Xenova/multilingual-e5-small",
+    "device": "dml",
+    "dtype": "q8",
+    "topK": 2,
+    "minimumScore": 0.2,
+    "keepMargin": 0.01,
+    "pinnedTools": [
+      "read",
+      "bash",
+      "powershell",
+      "edit",
+      "write"
+    ],
+    "maxQueryCharacters": 2400
+  },
+  "cache": {
+    "maxProcesses": 2,
+    "residentBudgetMb": 768,
+    "idleTtlMs": 120000,
+    "loadTimeoutMs": 30000,
+    "callTimeoutMs": 120000
+  },
+  "packages": [
+    {
+      "id": "pi-web-tools",
+      "package": "@bitcraft-apps/pi-web-tools",
+      "version": "1.6.0",
+      "entry": "index.ts",
+      "stateless": true,
+      "workerSdk": "lazy"
+    },
+    {
+      "id": "pi-ripgrep",
+      "entry": "node_modules/@earendil-works/pi-coding-agent/examples/extensions/truncated-tool.ts",
+      "stateless": true
+    },
+    {
+      "id": "pi-todo",
+      "entry": "node_modules/@earendil-works/pi-coding-agent/examples/extensions/todo.ts",
+      "mode": "native"
+    },
+    {
+      "id": "pi-plan",
+      "entry": "node_modules/@earendil-works/pi-coding-agent/examples/extensions/plan-mode/index.ts",
+      "mode": "native"
+    },
+    {
+      "id": "pi-question",
+      "entry": "node_modules/@earendil-works/pi-coding-agent/examples/extensions/question.ts",
+      "mode": "native"
+    },
+    {
+      "id": "pi-bookmark",
+      "entry": "node_modules/@earendil-works/pi-coding-agent/examples/extensions/bookmark.ts",
+      "mode": "native"
+    },
+    {
+      "id": "pi-json-schema",
+      "package": "@nqbao/pi-json-schema",
+      "version": "0.1.1",
+      "entry": "index.ts",
+      "mode": "native"
+    }
+  ]
+}

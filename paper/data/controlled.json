@@ -1,0 +1,1373 @@
+{
+  "formatVersion": 1,
+  "sourceRun": "run-m6aD0f",
+  "capturedAt": "2026-09-15T14:12:33.737Z",
+  "schemasMatch": true,
+  "sourceSha256": {
+    "comparison.json": "e21f21109ff0fa9160d92e2c82903edea53c6cd3036f5e811753423f28e3fbd3",
+    "summary.json": "e59825135abf7dd5e47942d1343eb280d25c4bc269fc6750c73fcccf28b0a57f"
+  },
+  "summary": [
+    {
+      "mode": "native",
+      "passed": true,
+      "requests": 27,
+      "inputBytes": 415713,
+      "sampledPeakMiB": 269.1796875,
+      "postEvictionSamples": 0,
+      "meanPostEvictionMiB": null,
+      "corePhaseSamples": 17,
+      "meanCorePhaseMiB": 266.5556066176471
+    },
+    {
+      "mode": "resident",
+      "passed": true,
+      "requests": 29,
+      "inputBytes": 414692,
+      "sampledPeakMiB": 265.51953125,
+      "postEvictionSamples": 0,
+      "meanPostEvictionMiB": null,
+      "corePhaseSamples": 17,
+      "meanCorePhaseMiB": 230.6691176470588
+    },
+    {
+      "mode": "streaming",
+      "passed": true,
+      "requests": 29,
+      "inputBytes": 414721,
+      "sampledPeakMiB": 415.84375,
+      "postEvictionSamples": 16,
+      "meanPostEvictionMiB": 176.149169921875,
+      "corePhaseSamples": 16,
+      "meanCorePhaseMiB": 176.149169921875
+    }
+  ],
+  "runs": [
+    {
+      "mode": "native",
+      "passed": true,
+      "requests": [
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 11666,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 12097,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 12378,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 12651,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 12924,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 13197,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 13470,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 13743,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 14016,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 14289,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 14562,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 14835,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 15113,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 15391,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 15669,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 15947,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 16225,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 16503,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 16781,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 17059,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 17337,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 17615,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 17893,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 18171,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 18449,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 18727,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        },
+        {
+          "schemaBytes": 7852,
+          "inputBytes": 19005,
+          "schemaHash": "2f41ad5254444176de94a4db20da1da39de5a6e10b8a50f996c49f2dadb1b4a7",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "websearch",
+            "webfetch",
+            "rg",
+            "todo",
+            "question"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "resident",
+      "passed": true,
+      "requests": [
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 9990,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 7276,
+          "inputBytes": 12478,
+          "schemaHash": "576efa781593bf97762154acc0213e61a2943bee2d094d0146676731a83893fe",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "webfetch",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 7276,
+          "inputBytes": 12909,
+          "schemaHash": "576efa781593bf97762154acc0213e61a2943bee2d094d0146676731a83893fe",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "webfetch",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 7276,
+          "inputBytes": 13190,
+          "schemaHash": "576efa781593bf97762154acc0213e61a2943bee2d094d0146676731a83893fe",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "webfetch",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 11345,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 11618,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 11891,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 12164,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 12437,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 12710,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 12983,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 13256,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 13529,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 13802,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 14080,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 14358,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 14636,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 14914,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 15192,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 15470,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 15748,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 16026,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 16304,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 16582,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 16860,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 17138,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 17416,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 17694,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 17972,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "streaming",
+      "passed": true,
+      "requests": [
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 9991,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 7276,
+          "inputBytes": 12479,
+          "schemaHash": "576efa781593bf97762154acc0213e61a2943bee2d094d0146676731a83893fe",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "webfetch",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 7276,
+          "inputBytes": 12910,
+          "schemaHash": "576efa781593bf97762154acc0213e61a2943bee2d094d0146676731a83893fe",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "webfetch",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 7276,
+          "inputBytes": 13191,
+          "schemaHash": "576efa781593bf97762154acc0213e61a2943bee2d094d0146676731a83893fe",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "webfetch",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 11346,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 11619,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 11892,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 12165,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 12438,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 12711,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 12984,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 13257,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 13530,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 13803,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 14081,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 14359,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 14637,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 14915,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 15193,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 15471,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 15749,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 16027,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 16305,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 16583,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 16861,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 17139,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 17417,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 17695,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        },
+        {
+          "schemaBytes": 5625,
+          "inputBytes": 17973,
+          "schemaHash": "fb0be2a27eb041a2ed0780f562972db1926abcd531ce5ac95bc5792fd2faeaea",
+          "names": [
+            "read",
+            "bash",
+            "edit",
+            "write",
+            "todo",
+            "question",
+            "moah_activate",
+            "moah_discover"
+          ]
+        }
+      ]
+    }
+  ]
+}

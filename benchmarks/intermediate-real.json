@@ -1,0 +1,41 @@
+{
+  "provider": "openrouter",
+  "model": "qwen/qwen3-coder-next",
+  "timeoutMs": 180000,
+  "repetitions": 1,
+  "modes": [
+    "native",
+    "resident",
+    "streaming"
+  ],
+  "measureMemory": true,
+  "observeProvider": true,
+  "cacheCohort": "natural-cache-rotating-order-not-forced-cold",
+  "name": "Intermediate Pi configuration: web package only; same new tasks",
+  "tasks": [
+    {
+      "id": "inventory-repair",
+      "prompts": [
+        "Fix summarizeInventory in src/inventory.mjs. Read the requirements in requirements.md and inspect the input fixture. Implement the change and write a short CHANGELOG.md. Work only in this task directory; do not install packages. Use whichever installed tools are useful. Complete without asking questions.",
+        "Now add selectLowStock(rows, threshold) to the same module. Use aggregate stock by SKU from summarizeInventory, return SKUs with quantity <= threshold, sorted alphabetically. Preserve the first function. Do not ask questions."
+      ],
+      "files": {
+        "requirements.md": "summarizeInventory(rows) returns an array sorted by sku. Sum quantity by sku for rows with active === true. Ignore other rows. Each output item is {sku,quantity}. Ignore rows with a missing/non-string sku or non-finite quantity; zero and negative quantities are valid. Do not mutate input.\n",
+        "src/inventory.mjs": "export function summarizeInventory(rows) { return rows; }\n",
+        "input.json": "[{\"sku\":\"B\",\"quantity\":3,\"active\":true},{\"sku\":\"A\",\"quantity\":8,\"active\":true},{\"sku\":\"A\",\"quantity\":-2,\"active\":true},{\"sku\":\"C\",\"quantity\":9,\"active\":false}]\n"
+      },
+      "verify": "import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';const {summarizeInventory:s,selectLowStock:l}=await import('./src/inventory.mjs');const rows=[{sku:'B',quantity:3,active:true},{sku:'A',quantity:8,active:true},{sku:'A',quantity:-2,active:true},{sku:'C',quantity:9,active:false},{sku:'X',quantity:NaN,active:true},{quantity:2,active:true},{sku:'Z',quantity:0,active:true}];const before=structuredClone(rows);assert.deepEqual(s(rows),[{sku:'A',quantity:6},{sku:'B',quantity:3},{sku:'Z',quantity:0}]);assert.deepEqual(rows,before);assert.deepEqual(s([]),[]);assert.deepEqual(l(rows,3),['B','Z']);assert.ok((await readFile('CHANGELOG.md','utf8')).length>20);"
+    },
+    {
+      "id": "url-policy",
+      "prompts": [
+        "Read the first 4000 characters of https://example.com/ using the installed web fetching tool. Save the page title and source URL in source.md. Then implement isAllowedUrl(value) in src/policy.mjs: accept only absolute HTTPS URLs whose hostname is exactly example.com and which have no username/password; allow paths, queries, fragments, and port 443. Reject other protocols, subdomains, non-default ports, invalid input and non-string values. Complete without questions and without installing packages. Work only in this task directory.",
+        "Research is complete. Add filterAllowed(values) to src/policy.mjs, retaining allowed URL strings in input order, deduplicated by exact string. Preserve isAllowedUrl and source.md. Complete without questions."
+      ],
+      "files": {
+        "src/policy.mjs": "export function isAllowedUrl(value) { return true; }\n"
+      },
+      "verify": "import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';const {isAllowedUrl:p,filterAllowed:f}=await import('./src/policy.mjs');for(const v of ['https://example.com','https://example.com:443/a?q=x#b'])assert.equal(p(v),true,v);for(const v of ['http://example.com','https://sub.example.com','https://example.com.evil.test','https://a:b@example.com','https://example.com:8443','/relative','not a url',null,42])assert.equal(p(v),false,String(v));assert.deepEqual(f(['https://example.com','http://example.com','https://example.com','https://example.com/a']),['https://example.com','https://example.com/a']);const report=await readFile('source.md','utf8');assert.match(report,/Example Domain/i);assert.ok(report.includes('https://example.com'));"
+    }
+  ]
+}

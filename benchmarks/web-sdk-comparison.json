@@ -1,0 +1,25 @@
+{
+  "name": "Web phase comparison after lazy SDK optimization; identical original web tools",
+  "provider": "openrouter",
+  "model": "qwen/qwen3-coder-next",
+  "timeoutMs": 180000,
+  "repetitions": 2,
+  "tasks": [
+    {
+      "id": "web-research",
+      "prompts": [
+        "Use the installed web tools to read the first 8000 characters of https://pi.dev/docs/latest/extensions and https://pi.dev/docs/latest/skills. A brief overview is sufficient; do not retrieve further pages. Write a concise summary with both source URLs in research.md. Work only in this task directory.",
+        "Research is finished. Implement clamp(value,min,max) in src/clamp.mjs: limit the value to the inclusive bounds and throw RangeError if min exceeds max. Preserve research.md. Work only in this task directory."
+      ],
+      "files": {
+        "src/clamp.mjs": "export function clamp(value,min,max) { return value; }\n"
+      },
+      "verify": "import assert from 'node:assert/strict'; import {readFile} from 'node:fs/promises'; const {clamp}=await import('./src/clamp.mjs'); assert.equal(clamp(-1,0,10),0); assert.equal(clamp(11,0,10),10); assert.equal(clamp(5,0,10),5); assert.throws(()=>clamp(2,5,1),RangeError); const report=await readFile('research.md','utf8'); assert.ok(report.includes('https://pi.dev/docs/latest/extensions')&&report.includes('https://pi.dev/docs/latest/skills'));"
+    }
+  ],
+  "modes": [
+    "native",
+    "streaming"
+  ],
+  "measureMemory": true
+}

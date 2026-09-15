@@ -1,0 +1,27 @@
+{
+  "name": "MoAH functional coding smoke — not a quality benchmark",
+  "provider": "openrouter",
+  "model": "qwen/qwen3-coder-next",
+  "timeoutMs": 120000,
+  "repetitions": 1,
+  "tasks": [
+    {
+      "id": "sum-fix",
+      "prompts": ["Inspect src/math.mjs and briefly plan a fix for sum on empty and multi-element arrays. Do not edit yet.", "Implement the fix now. Keep the public API unchanged. Work only in this task directory."],
+      "files": {"src/math.mjs": "export const sum = values => values.reduce((a, b) => a + b);\n"},
+      "verify": "import assert from 'node:assert/strict'; const {sum}=await import('./src/math.mjs'); assert.equal(sum([]),0); assert.equal(sum([1,2,3]),6); assert.equal(sum([-2,2]),0);"
+    },
+    {
+      "id": "deduplicate",
+      "prompts": ["Implement unique(values) in src/unique.mjs. Preserve first-occurrence order, support primitive values and never mutate input. Inspect the file, implement and verify. Work only in this task directory."],
+      "files": {"src/unique.mjs": "export function unique(values) { return values; }\n"},
+      "verify": "import assert from 'node:assert/strict'; const {unique}=await import('./src/unique.mjs'); const input=[3,1,3,2,1]; assert.deepEqual(unique(input),[3,1,2]); assert.deepEqual(input,[3,1,3,2,1]); assert.deepEqual(unique([]),[]); assert.deepEqual(unique(['a','a',null,null]),['a',null]);"
+    },
+    {
+      "id": "web-research",
+      "prompts": ["Use the installed web tools to read https://pi.dev/docs/latest/extensions and https://pi.dev/docs/latest/skills. Write a concise summary with both source URLs in research.md. Work only in this task directory.", "Research is finished. Implement clamp(value,min,max) in src/clamp.mjs: limit the value to the inclusive bounds and throw RangeError if min exceeds max. Preserve research.md. Work only in this task directory."],
+      "files": {"src/clamp.mjs": "export function clamp(value,min,max) { return value; }\n"},
+      "verify": "import assert from 'node:assert/strict'; import {readFile} from 'node:fs/promises'; const {clamp}=await import('./src/clamp.mjs'); assert.equal(clamp(-1,0,10),0); assert.equal(clamp(11,0,10),10); assert.equal(clamp(5,0,10),5); assert.throws(()=>clamp(2,5,1),RangeError); const report=await readFile('research.md','utf8'); assert.ok(report.includes('https://pi.dev/docs/latest/extensions')&&report.includes('https://pi.dev/docs/latest/skills'));"
+    }
+  ]
+}

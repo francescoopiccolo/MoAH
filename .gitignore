@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.moah/
+.pi/
+*.log
+.env
+coverage/
+.paper-venv/
+.env.*
+*.tgz
+__pycache__/

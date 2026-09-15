@@ -1,0 +1,41 @@
+{
+  "name": "moah-pi",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "bin": { "moah": "bin/moah.mjs" },
+  "files": ["bin/", "dist/src/", "dist/scripts/", "scripts/lazy-pi-sdk.cjs", "scripts/measure-tree.ps1", "scripts/web-tools-requirements.txt", "paper/", "*.md", "LICENSE", "CITATION.cff"],
+  "type": "module",
+  "description": "Model-selected capability catalog and demand-loaded Pi tools",
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepack": "npm run build",
+    "check": "tsc --noEmit",
+    "test": "tsx --test --test-concurrency=1 test/*.test.ts",
+    "test:router": "tsx scripts/check-router.ts",
+    "test:package": "node scripts/check-release.mjs",
+    "moah": "tsx src/cli.ts",
+    "start": "tsx src/cli.ts pi"
+  },
+  "dependencies": {
+    "@bitcraft-apps/pi-web-tools": "1.6.0",
+    "@earendil-works/pi-coding-agent": "0.85.1",
+    "@huggingface/transformers": "4.2.0",
+    "@nqbao/pi-json-schema": "0.1.1",
+    "jiti": "2.7.0",
+    "typebox": "1.3.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  },
+  "pi": {
+    "extensions": [
+      "./dist/src/pi-extension.js"
+    ]
+  }
+}

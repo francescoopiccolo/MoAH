@@ -1,0 +1,10 @@
+{
+  "name": "moah-native-test-fixture",
+  "version": "1.0.0",
+  "type": "module",
+  "pi": {
+    "extensions": ["index.mjs"],
+    "skills": ["skills"],
+    "prompts": ["prompts"]
+  }
+}
