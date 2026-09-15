@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { resolve } from "node:path";
 import { createServer } from "node:http";
+import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { checkedPath, runBenchmark, runBounded, summarizeUsage, readMemorySamples } from "../src/benchmark.js";
 import { writeJson } from "../src/config.js";
@@ -50,11 +51,30 @@ test("benchmark preserves UTF-8 characters split between output chunks", async (
   assert.equal(run.code, 0); assert.equal(run.stdout, "€");
 });
 
-test("Windows memory sampler observes the process tree and persists partial output", { skip: process.platform !== "win32", timeout: 20000 }, async () => {
+test("Windows memory sampler observes the process tree and persists partial output", { skip: process.platform !== "win32", timeout: 30000 }, async () => {
   const tmp = await temporaryDirectory();
   try {
     const memoryFile = join(tmp.path, "memory.jsonl");
-    const run = await runBounded(process.execPath, ["-e", "const {spawn}=require('node:child_process');spawn(process.execPath,['-e','const b=Buffer.alloc(32*1024*1024,1);setTimeout(()=>console.log(b.length),2500)'],{stdio:'inherit'});console.log('started');"], tmp.path, 10000,
+    // Wait for observable sampling, not a fixed sleep shorter than cold CIM startup.
+    await writeFile(join(tmp.path, "sample-child.cjs"), `
+      const { readFileSync } = require('node:fs');
+      const b = Buffer.alloc(32 * 1024 * 1024, 1);
+      const deadline = Date.now() + 15000;
+      const timer = setInterval(() => {
+        let observed = false;
+        try {
+          observed = readFileSync('memory.jsonl', 'utf8').split('\\n').some(line => {
+            try { const sample = JSON.parse(line); return sample.pids?.includes(process.pid) && sample.workingSetBytes > b.length; }
+            catch { return false; }
+          });
+        } catch { /* sampler has not written yet */ }
+        if (observed || Date.now() > deadline) {
+          clearInterval(timer); console.log(observed ? 'sampled ' + b.length : 'sampling deadline');
+          process.exitCode = observed ? 0 : 1;
+        }
+      }, 100);
+    `);
+    const run = await runBounded(process.execPath, ["-e", "const {spawn}=require('node:child_process');spawn(process.execPath,['sample-child.cjs'],{stdio:'inherit'}).once('exit',code=>process.exitCode=code??1);console.log('started');"], tmp.path, 20000,
       { stdoutFile: join(tmp.path, "out"), stderrFile: join(tmp.path, "err"), memoryFile });
     assert.equal(run.code, 0); assert.match(run.stdout, /started/);
     const memory = await readMemorySamples(memoryFile);
