@@ -57,6 +57,11 @@ node dist/scripts/summarize-controlled.js .moah/controlled-runs/run-REPLACE_ME
 The placeholder must be replaced with the directory printed by the run.
 The injected response delays support measurement; its elapsed time is not LLM
 latency. Non-Windows runs do not collect the Windows CIM memory metric.
+Windows must allow the local sampler script to run under its existing policy.
+Monitor startup and CIM errors are recorded as unavailable measurements, not
+zero memory. CI initializes CIM before its short-process integration test;
+cold sampler startup can miss short-lived processes. MoAH does not change the
+machine's execution policy.
 
 ## Real-model experiments (provider charges)
 

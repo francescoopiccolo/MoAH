@@ -17,7 +17,8 @@ while ($true) {
     $taskSample = [ordered]@{ time = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds(); pids = @($taskTree.ProcessId); workingSetBytes = [double](($taskTree | Measure-Object WorkingSetSize -Sum).Sum); privateBytes = [double](($taskTree | Measure-Object PrivatePageCount -Sum).Sum) }
     [System.IO.File]::AppendAllText($OutputPath, (($taskSample | ConvertTo-Json -Compress) + "`n"), $taskEncoding)
   } catch {
-    [System.IO.File]::AppendAllText($OutputPath, "{`"error`":`"Memory sampling failed`"}`n", $taskEncoding)
+    $taskFailure = @{ error = 'Memory sampling failed'; detail = $_.Exception.Message }
+    [System.IO.File]::AppendAllText($OutputPath, (($taskFailure | ConvertTo-Json -Compress) + "`n"), $taskEncoding)
     break
   }
   Start-Sleep -Milliseconds 250

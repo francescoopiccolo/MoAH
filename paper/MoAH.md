@@ -343,6 +343,9 @@ Memory is the summed process-tree working set from Windows CIM snapshots, with
 a 250 ms sleep between polls plus query overhead. Shared pages can be counted
 more than once; a sampled peak can miss a transient spike. These values are not
 unique physical RAM occupancy, hardware RSS counters or device-read telemetry.
+Sampler startup can miss short-lived processes. The release records monitor
+startup errors; its CI initializes CIM before the short-process functional test.
+This preparation is not part of the historical performance measurements.
 
 An **artifact pass** requires successful independent verification, a normal
 process exit and no timeout. A **strict pass** additionally requires no recorded

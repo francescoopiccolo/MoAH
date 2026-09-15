@@ -36,8 +36,9 @@ export async function runBounded(command: string, args: string[], cwd: string, t
   const monitorScript = [new URL("../scripts/measure-tree.ps1", import.meta.url), new URL("../../scripts/measure-tree.ps1", import.meta.url)].find(p => existsSync(p));
   const monitor = process.platform === "win32" && capture?.memoryFile && child.pid && monitorScript
     ? spawn("powershell.exe", ["-NoProfile", "-NonInteractive", "-File", fileURLToPath(monitorScript), "-RootProcessId", String(child.pid), "-OutputPath", capture.memoryFile], { windowsHide: true, stdio: ["ignore", "ignore", "pipe"] }) : undefined;
+  let monitoring = true;
   const monitorFailure = (detail: string) => {
-    if (capture?.memoryFile) appendFileSync(capture.memoryFile, JSON.stringify({ error: "Memory monitor failed", detail }) + "\n");
+    if (monitoring && capture?.memoryFile) appendFileSync(capture.memoryFile, JSON.stringify({ error: "Memory monitor failed", detail }) + "\n");
   };
   let monitorStderr = "";
   monitor?.stderr?.on("data", chunk => { monitorStderr = (monitorStderr + chunk.toString()).slice(0, 4096); });
@@ -59,7 +60,7 @@ export async function runBounded(command: string, args: string[], cwd: string, t
   try {
     const code = await new Promise<number | null>((yes, no) => { child.once("error", no); child.once("close", yes); });
     return { code, timedOut, stdout, stderr, elapsedMs: performance.now() - start };
-  } finally { clearTimeout(timer); monitor?.kill(); }
+  } finally { clearTimeout(timer); monitoring = false; monitor?.kill(); }
 }
 
 export async function readMemorySamples(file: string) {

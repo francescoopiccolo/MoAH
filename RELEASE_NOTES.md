@@ -25,6 +25,9 @@ See README.md for Python/shell prerequisites for upstream web tools and Pi login
 an external temporary directory, including safe initialization, bundled-package
 discovery and worker loading. The package uses no checkout-relative dependency
 assumption for its bundled web tools.
+The Windows CI job initializes CIM before its short-process memory test.
+Sampler startup/command errors are retained in diagnostics; missing measurements
+are not reported as zero. No machine execution policy is changed by MoAH.
 
 The primary experiments have 22 correct artifacts / 24 attempts and 21 strict
 error-free passes. Results are exploratory and mixed: smaller schemas do not
