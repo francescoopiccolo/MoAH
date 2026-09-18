@@ -23,6 +23,7 @@ export interface BenchmarkSuite {
   profiles: string[];
   tasks: BenchmarkTask[];
   mainArgs?: string[];
+  opencodeModel?: string;
 }
 
 export interface RunResult {
@@ -201,15 +202,21 @@ export async function runSingle(
       env.MOAH_ORACLE_TOOLS = task.oracleTools.join(",");
     }
 
-    if (selection.profile !== "pi-default") {
+    if (selection.profile !== "pi-default" && selection.profile !== "opencode") {
       await runCommand(command, [...nodeArgs, "index"], { cwd: workspace, env, timeoutMs: suite.timeoutMs });
     }
 
-    const measured = await runCommand(
-      command,
-      [...nodeArgs, "baseline", selection.profile, "--mode", "json", ...(suite.mainArgs ?? []), task.prompt],
-      { cwd: workspace, env, timeoutMs: suite.timeoutMs },
-    );
+    const measured = selection.profile === "opencode"
+      ? await runCommand(
+          process.platform === "win32" ? "opencode.cmd" : "opencode",
+          ["run", "--format", "json", "--model", suite.opencodeModel ?? "openrouter/openai/gpt-4o-mini", task.prompt],
+          { cwd: workspace, env, timeoutMs: suite.timeoutMs },
+        )
+      : await runCommand(
+          command,
+          [...nodeArgs, "baseline", selection.profile, "--mode", "json", ...(suite.mainArgs ?? []), task.prompt],
+          { cwd: workspace, env, timeoutMs: suite.timeoutMs },
+        );
 
     const verify = await runCommand(task.verify, [], {
       cwd: workspace,
@@ -290,15 +297,21 @@ export async function runSuite(suitePath: string, cwd: string, dryRun = false): 
             env.MOAH_ORACLE_TOOLS = task.oracleTools.join(",");
           }
 
-          if (profile !== "pi-default") {
+          if (profile !== "pi-default" && profile !== "opencode") {
             await runCommand(command, [...nodeArgs, "index"], { cwd: workspace, env, timeoutMs: suite.timeoutMs });
           }
 
-          const measured = await runCommand(
-            command,
-            [...nodeArgs, "baseline", profile, "--mode", "json", ...(suite.mainArgs ?? []), task.prompt],
-            { cwd: workspace, env, timeoutMs: suite.timeoutMs },
-          );
+          const measured = profile === "opencode"
+            ? await runCommand(
+                process.platform === "win32" ? "opencode.cmd" : "opencode",
+                ["run", "--format", "json", "--model", suite.opencodeModel ?? "openrouter/openai/gpt-4o-mini", task.prompt],
+                { cwd: workspace, env, timeoutMs: suite.timeoutMs },
+              )
+            : await runCommand(
+                command,
+                [...nodeArgs, "baseline", profile, "--mode", "json", ...(suite.mainArgs ?? []), task.prompt],
+                { cwd: workspace, env, timeoutMs: suite.timeoutMs },
+              );
 
           const verify = await runCommand(task.verify, [], {
             cwd: workspace,

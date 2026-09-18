@@ -8,12 +8,14 @@
     "--model",
     "openai/gpt-4o-mini"
   ],
+  "opencodeModel": "openrouter/openai/gpt-4o-mini",
   "profiles": [
     "pi-default",
     "pi-full",
     "moah-auto",
     "moah-suggest",
-    "moah-oracle"
+    "moah-oracle",
+    "opencode"
   ],
   "tasks": [
     {
