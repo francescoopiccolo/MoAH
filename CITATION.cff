@@ -7,6 +7,6 @@ date-released: 2026-09-15
 authors:
   - name: "MoAH contributors"
 repository-code: "https://github.com/francescoopiccolo/MoAH"
-url: "https://github.com/francescoopiccolo/MoAH/blob/codex/pi-router/paper/MoAH.md"
+url: "https://github.com/francescoopiccolo/MoAH"
 license: MIT
 abstract: "Phase-adaptive capability selection and demand-loaded tool execution on original Pi. Research preview with separated real-model and controlled measurements."

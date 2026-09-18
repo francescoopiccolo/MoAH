@@ -36,5 +36,4 @@ in a later phase, with a higher initial peak. OpenCode comparisons are theoretic
 
 No autonomous arbitrary package installation/removal, human-effort savings or
 physical SSD advantage is claimed. Windows is the locally validated platform.
-Known advisories in the pinned optional semantic stack are documented in
-SECURITY.md. This release is a research artifact, not a hardened service.
+This release is a research artifact, not a hardened service.
