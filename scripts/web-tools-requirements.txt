@@ -1,2 +1,0 @@
-ddgr==2.2
-pypandoc_binary==1.17

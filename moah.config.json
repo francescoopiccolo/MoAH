@@ -1,37 +1,21 @@
 {
-  "selection": {
-    "maxActiveTools": 6,
-    "catalogPageSize": 40,
-    "descriptionCharacters": 200,
-    "resetOnPrompt": true,
-    "releaseInactive": true
+  "baseline": {
+    "enabled": true
   },
   "router": {
     "enabled": true,
-    "model": "Xenova/multilingual-e5-small",
-    "device": "dml",
-    "dtype": "q8",
-    "topK": 2,
-    "minimumScore": 0.2,
-    "keepMargin": 0.01,
-    "pinnedTools": ["read", "bash", "powershell", "edit", "write"],
-    "maxQueryCharacters": 2400
+    "mode": "auto",
+    "baseUrl": "https://openrouter.ai/api/v1",
+    "model": "openai/gpt-4o-mini",
+    "apiKeyEnv": "MOAH_ROUTER_API_KEY",
+    "maxTools": 6,
+    "baseTools": [
+      "read",
+      "bash",
+      "powershell",
+      "edit",
+      "write"
+    ]
   },
-  "cache": {
-    "maxProcesses": 2,
-    "residentBudgetMb": 768,
-    "idleTtlMs": 120000,
-    "loadTimeoutMs": 30000,
-    "callTimeoutMs": 120000
-  },
-  "packages": [
-    {
-      "id": "pi-web-tools",
-      "package": "@bitcraft-apps/pi-web-tools",
-      "version": "1.6.0",
-      "entry": "index.ts",
-      "stateless": true,
-      "workerSdk": "lazy"
-    }
-  ]
+  "packages": []
 }

@@ -9,3 +9,9 @@ coverage/
 .env.*
 *.tgz
 __pycache__/
+MoAH-Pi/
+data/qualification/
+data/PI_OFFICIAL_CAPABILITIES.md
+BENCHMARK-TRUST-REDESIGN.md
+NEMO_GYM_EVALUATION.md
+TRUST_POLICY.md

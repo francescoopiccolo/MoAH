@@ -21,19 +21,19 @@ try {
   console.log("Installing compiled tarball in a fresh external directory...");
   run([npmCli, "install", "--prefix", install, "--omit=dev", "--no-audit", "--no-fund", tarball], dir);
   const cli = join(install, "node_modules", "moah-pi", "bin", "moah.mjs");
-  assert.match(run([cli, "help"], project), /moah_activate|model-selected/);
+  assert.match(run([cli, "help"], project), /API tool router|moah_select/);
   run([cli, "init"], project);
   const before = await readFile(join(project, "moah.config.json"), "utf8");
   run([cli, "init"], project, 1);
   assert.equal(await readFile(join(project, "moah.config.json"), "utf8"), before);
-  assert.equal(JSON.parse(before).router.enabled, false);
+  assert.equal(JSON.parse(before).router.enabled, true);
   run([cli, "index"], project);
   const catalog = JSON.parse(await readFile(join(project, ".moah", "catalog.json"), "utf8"));
-  assert.equal(catalog.packages[0].mode, "stream", catalog.packages[0].reason);
-  assert.deepEqual(catalog.packages[0].tools.map(t => t.name).sort(), ["webfetch", "websearch"]);
+  assert.equal(catalog.packages[0].mode, "native", catalog.packages[0].reason);
+  assert.equal(catalog.packages[0].nativeResident, true, catalog.packages[0].reason);
   run([cli, "catalog"], project);
   run([cli, "pi", "--help"], project);
-  console.log("PASS: production-only install, compiled CLI, safe init, bundled package discovery and worker probe outside checkout.");
+  console.log("PASS: production-only install, compiled CLI, safe init and bundled package verification outside checkout.");
 } finally {
   const rel = relative(tempRoot, await realpath(dir));
   if (!rel || rel === ".." || rel.startsWith(".." + sep) || isAbsolute(rel) || !rel.startsWith("moah-release-")) throw Error("Unsafe release cleanup");

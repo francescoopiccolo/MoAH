@@ -1,0 +1,2761 @@
+{
+  "schema": 1,
+  "generatedAt": "2026-09-17T14:24:34.106Z",
+  "pi": {
+    "repository": "https://github.com/earendil-works/pi",
+    "tag": "v0.85.1",
+    "commit": "d981de1229ef899957bbe968bc8dcda02a21f477"
+  },
+  "trustPolicy": "Only versioned first-party records are acquisition candidates. Static analysis never grants worker streaming.",
+  "capabilities": [
+    {
+      "id": "read",
+      "name": "read",
+      "provenanceClass": "pi-core",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/src/core/tools/read.ts",
+      "corpusRelativePath": null,
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/src/core/tools/read.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "7b0812226c446baaf4dedccfea97d53cf24bd8b3bcf807722c99cf6da71856d6",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "native-only: external dependency review required",
+      "description": "Official Pi core primitive; audit-generated metadata.",
+      "usefulnessScore": 10,
+      "recommendedPolicy": "Always-on",
+      "lifecycleClass": "native-resident",
+      "stateful": false,
+      "lifecycleHooks": [],
+      "uiCoupling": false,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": false,
+      "externalDependencies": [
+        "typebox"
+      ],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Static audit found no blocker, but runtime, lifecycle and dependency-policy qualification are still absent.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [],
+        "ui": false,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-agent-core",
+          "@earendil-works/pi-ai",
+          "fs",
+          "fs/promises",
+          "typebox",
+          "../../utils/image-process.ts",
+          "../../utils/mime.ts",
+          "../experimental.ts",
+          "../extensions/types.ts",
+          "./path-utils.ts",
+          "./renderers/read.ts",
+          "./tool-definition-wrapper.ts",
+          "./truncate.ts"
+        ],
+        "externalDependencies": [
+          "typebox"
+        ]
+      }
+    },
+    {
+      "id": "edit",
+      "name": "edit",
+      "provenanceClass": "pi-core",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/src/core/tools/edit.ts",
+      "corpusRelativePath": null,
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/src/core/tools/edit.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "4d86a5fe6d42187dcb5390347cffda0204c4139ed1094b0c29bb8fcb44064918",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "native-only: external dependency review required",
+      "description": "Official Pi core primitive; audit-generated metadata.",
+      "usefulnessScore": 10,
+      "recommendedPolicy": "Always-on",
+      "lifecycleClass": "native-resident",
+      "stateful": false,
+      "lifecycleHooks": [],
+      "uiCoupling": false,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": false,
+      "externalDependencies": [
+        "typebox"
+      ],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Static audit found no blocker, but runtime, lifecycle and dependency-policy qualification are still absent.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [],
+        "ui": false,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-agent-core",
+          "fs",
+          "fs/promises",
+          "typebox",
+          "../../utils/text.ts",
+          "../experimental.ts",
+          "../extensions/types.ts",
+          "./edit-diff.ts",
+          "./file-mutation-queue.ts",
+          "./path-utils.ts",
+          "./renderers/edit.ts",
+          "./tool-definition-wrapper.ts"
+        ],
+        "externalDependencies": [
+          "typebox"
+        ]
+      }
+    },
+    {
+      "id": "write",
+      "name": "write",
+      "provenanceClass": "pi-core",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/src/core/tools/write.ts",
+      "corpusRelativePath": null,
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/src/core/tools/write.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "acf7680f2ffff2d8d4bc1b3bce1a8eee7b9444001e4c82b24bfcac554c4e0fb7",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "native-only: external dependency review required",
+      "description": "Official Pi core primitive; audit-generated metadata.",
+      "usefulnessScore": 9,
+      "recommendedPolicy": "Always-on",
+      "lifecycleClass": "native-resident",
+      "stateful": false,
+      "lifecycleHooks": [],
+      "uiCoupling": false,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": false,
+      "externalDependencies": [
+        "typebox"
+      ],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Static audit found no blocker, but runtime, lifecycle and dependency-policy qualification are still absent.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [],
+        "ui": false,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-agent-core",
+          "fs/promises",
+          "path",
+          "typebox",
+          "../experimental.ts",
+          "../extensions/types.ts",
+          "./file-mutation-queue.ts",
+          "./path-utils.ts",
+          "./renderers/write.ts",
+          "./tool-definition-wrapper.ts"
+        ],
+        "externalDependencies": [
+          "typebox"
+        ]
+      }
+    },
+    {
+      "id": "bash",
+      "name": "bash",
+      "provenanceClass": "pi-core",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/src/core/tools/bash.ts",
+      "corpusRelativePath": null,
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/src/core/tools/bash.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "1f1130cdb33b9c7a74f81aeac9d3bb0208a8a30d65a0bf238f8ec30d39e21778",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "native-only: external dependency review required",
+      "description": "Official Pi core primitive; audit-generated metadata.",
+      "usefulnessScore": 10,
+      "recommendedPolicy": "Always-on",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [],
+      "uiCoupling": false,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": true,
+      "childProcessUsage": true,
+      "externalDependencies": [
+        "typebox"
+      ],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [],
+        "ui": false,
+        "sessionManager": true,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": true,
+        "mutableTopLevel": false,
+        "imports": [
+          "node:fs",
+          "node:fs/promises",
+          "@earendil-works/pi-agent-core",
+          "child_process",
+          "typebox",
+          "../../utils/child-process.ts",
+          "../../utils/shell.ts",
+          "../experimental.ts",
+          "../extensions/types.ts",
+          "./output-accumulator.ts",
+          "./renderers/bash.ts",
+          "./tool-definition-wrapper.ts",
+          "./truncate.ts"
+        ],
+        "externalDependencies": [
+          "typebox"
+        ]
+      }
+    },
+    {
+      "id": "grep",
+      "name": "grep",
+      "provenanceClass": "pi-core",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/src/core/tools/grep.ts",
+      "corpusRelativePath": null,
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/src/core/tools/grep.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "88be3d00217d1a1caf8a9e7bb2b8d2e6d96edfa4b790c2cf76c746ab36b8841b",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "native-only: external dependency review required",
+      "description": "Official Pi core primitive; audit-generated metadata.",
+      "usefulnessScore": 9,
+      "recommendedPolicy": "Always-on",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [],
+      "uiCoupling": false,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": true,
+      "externalDependencies": [
+        "typebox"
+      ],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [],
+        "ui": false,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": true,
+        "mutableTopLevel": false,
+        "imports": [
+          "node:fs/promises",
+          "node:readline",
+          "@earendil-works/pi-agent-core",
+          "child_process",
+          "path",
+          "typebox",
+          "../../utils/tools-manager.ts",
+          "../extensions/types.ts",
+          "./path-utils.ts",
+          "./renderers/grep.ts",
+          "./tool-definition-wrapper.ts",
+          "./truncate.ts"
+        ],
+        "externalDependencies": [
+          "typebox"
+        ]
+      }
+    },
+    {
+      "id": "find",
+      "name": "find",
+      "provenanceClass": "pi-core",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/src/core/tools/find.ts",
+      "corpusRelativePath": null,
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/src/core/tools/find.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "b06bcae6821a0e9fda1b63be613a7ce28eb0e66e1d01d16564e59e83f9ce10ea",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "native-only: external dependency review required",
+      "description": "Official Pi core primitive; audit-generated metadata.",
+      "usefulnessScore": 8,
+      "recommendedPolicy": "Always-on",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [],
+      "uiCoupling": false,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": true,
+      "externalDependencies": [
+        "typebox"
+      ],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [],
+        "ui": false,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": true,
+        "mutableTopLevel": false,
+        "imports": [
+          "node:readline",
+          "@earendil-works/pi-agent-core",
+          "child_process",
+          "path",
+          "typebox",
+          "../../utils/tools-manager.ts",
+          "../extensions/types.ts",
+          "./path-utils.ts",
+          "./renderers/find.ts",
+          "./tool-definition-wrapper.ts",
+          "./truncate.ts"
+        ],
+        "externalDependencies": [
+          "typebox"
+        ]
+      }
+    },
+    {
+      "id": "ls",
+      "name": "ls",
+      "provenanceClass": "pi-core",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/src/core/tools/ls.ts",
+      "corpusRelativePath": null,
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/src/core/tools/ls.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "3d0a5457e4f5b9e9967c44608b76b060374d047e80d6871ecec4459b612cb6a3",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "native-only: external dependency review required",
+      "description": "Official Pi core primitive; audit-generated metadata.",
+      "usefulnessScore": 7,
+      "recommendedPolicy": "Always-on",
+      "lifecycleClass": "native-resident",
+      "stateful": false,
+      "lifecycleHooks": [],
+      "uiCoupling": false,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": false,
+      "externalDependencies": [
+        "typebox"
+      ],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Static audit found no blocker, but runtime, lifecycle and dependency-policy qualification are still absent.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [],
+        "ui": false,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "node:fs/promises",
+          "@earendil-works/pi-agent-core",
+          "path",
+          "typebox",
+          "../extensions/types.ts",
+          "./path-utils.ts",
+          "./renderers/ls.ts",
+          "./tool-definition-wrapper.ts",
+          "./truncate.ts"
+        ],
+        "externalDependencies": [
+          "typebox"
+        ]
+      }
+    },
+    {
+      "id": "plan-mode",
+      "name": "plan-mode",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/plan-mode/index.ts",
+      "corpusRelativePath": "extensions/plan-mode/index.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/plan-mode/index.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "90fae53e2fada97165f7488520bd54f3cbfe5d2c7e4cfd3bd2aa07ee796e61e8",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "no non-Pi external imports observed",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 9,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [
+        "agent_end",
+        "before_agent_start",
+        "context",
+        "session_start",
+        "tool_call",
+        "turn_end"
+      ],
+      "uiCoupling": true,
+      "commandsRegistered": 2,
+      "sessionManagerUsage": true,
+      "childProcessUsage": false,
+      "externalDependencies": [],
+      "phaseTags": [
+        "planning"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 2,
+        "hooks": [
+          "agent_end",
+          "before_agent_start",
+          "context",
+          "session_start",
+          "tool_call",
+          "turn_end"
+        ],
+        "ui": true,
+        "sessionManager": true,
+        "setActiveTools": true,
+        "persistence": true,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-agent-core",
+          "@earendil-works/pi-ai",
+          "@earendil-works/pi-coding-agent",
+          "@earendil-works/pi-tui",
+          "./utils.ts"
+        ],
+        "externalDependencies": []
+      }
+    },
+    {
+      "id": "subagent",
+      "name": "subagent",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/subagent/index.ts",
+      "corpusRelativePath": "extensions/subagent/index.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/subagent/index.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "4facaa61c9c781748dd000eb5d2ec0a75289986d1a6e11ce13971ca5653dc252",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "native-only: external dependency review required",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 8,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [],
+      "uiCoupling": true,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": true,
+      "externalDependencies": [
+        "typebox"
+      ],
+      "phaseTags": [
+        "research",
+        "implementation",
+        "testing"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 1,
+        "registerCommand": 0,
+        "hooks": [],
+        "ui": true,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": true,
+        "mutableTopLevel": false,
+        "imports": [
+          "node:child_process",
+          "node:fs",
+          "node:os",
+          "node:path",
+          "@earendil-works/pi-agent-core",
+          "@earendil-works/pi-ai",
+          "@earendil-works/pi-ai",
+          "@earendil-works/pi-coding-agent",
+          "@earendil-works/pi-tui",
+          "typebox",
+          "./agents.ts"
+        ],
+        "externalDependencies": [
+          "typebox"
+        ]
+      }
+    },
+    {
+      "id": "todo",
+      "name": "todo",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/todo.ts",
+      "corpusRelativePath": "extensions/todo.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/todo.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "e46824d00217e25242c186d41837cc84ca81b23f978500323448502a9a424ee2",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "native-only: external dependency review required",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 8,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [
+        "session_start",
+        "session_tree"
+      ],
+      "uiCoupling": true,
+      "commandsRegistered": 1,
+      "sessionManagerUsage": true,
+      "childProcessUsage": false,
+      "externalDependencies": [
+        "typebox"
+      ],
+      "phaseTags": [
+        "planning"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 1,
+        "registerCommand": 1,
+        "hooks": [
+          "session_start",
+          "session_tree"
+        ],
+        "ui": true,
+        "sessionManager": true,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-ai",
+          "@earendil-works/pi-coding-agent",
+          "@earendil-works/pi-tui",
+          "typebox"
+        ],
+        "externalDependencies": [
+          "typebox"
+        ]
+      }
+    },
+    {
+      "id": "question",
+      "name": "question",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/question.ts",
+      "corpusRelativePath": "extensions/question.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/question.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "a1625d2c72a65d859154a7e66bef222d48ca9e3654a8bb910829ad350378a4c4",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "native-only: external dependency review required",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 8,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [],
+      "uiCoupling": true,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": false,
+      "externalDependencies": [
+        "typebox"
+      ],
+      "phaseTags": [
+        "planning"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 1,
+        "registerCommand": 0,
+        "hooks": [],
+        "ui": true,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-coding-agent",
+          "@earendil-works/pi-tui",
+          "typebox"
+        ],
+        "externalDependencies": [
+          "typebox"
+        ]
+      }
+    },
+    {
+      "id": "questionnaire",
+      "name": "questionnaire",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/questionnaire.ts",
+      "corpusRelativePath": "extensions/questionnaire.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/questionnaire.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "3f1f719d81152ff013f5d36a97cc3976388d43f2d89bff0f19827d3443d903e6",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "native-only: external dependency review required",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 7,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [],
+      "uiCoupling": true,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": false,
+      "externalDependencies": [
+        "typebox"
+      ],
+      "phaseTags": [
+        "planning"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 1,
+        "registerCommand": 0,
+        "hooks": [],
+        "ui": true,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-coding-agent",
+          "@earendil-works/pi-tui",
+          "typebox"
+        ],
+        "externalDependencies": [
+          "typebox"
+        ]
+      }
+    },
+    {
+      "id": "permission-gate",
+      "name": "permission-gate",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/permission-gate.ts",
+      "corpusRelativePath": "extensions/permission-gate.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/permission-gate.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "e32086ba9dd9b4ba0fd308b65241d9affa0b5ecd3f90ef7ea1b9f2b30cab8cc1",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "no non-Pi external imports observed",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 6,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [
+        "tool_call"
+      ],
+      "uiCoupling": true,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": false,
+      "externalDependencies": [],
+      "phaseTags": [
+        "implementation",
+        "testing"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [
+          "tool_call"
+        ],
+        "ui": true,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-coding-agent"
+        ],
+        "externalDependencies": []
+      }
+    },
+    {
+      "id": "protected-paths",
+      "name": "protected-paths",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/protected-paths.ts",
+      "corpusRelativePath": "extensions/protected-paths.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/protected-paths.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "9ca66b1f3b1b9a61cc5ddc660f92cca2ea66c4264a1bdb6b00e0da5844399fe2",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "no non-Pi external imports observed",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 5,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [
+        "tool_call"
+      ],
+      "uiCoupling": true,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": false,
+      "externalDependencies": [],
+      "phaseTags": [
+        "implementation",
+        "testing"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [
+          "tool_call"
+        ],
+        "ui": true,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-coding-agent"
+        ],
+        "externalDependencies": []
+      }
+    },
+    {
+      "id": "project-trust",
+      "name": "project-trust",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/project-trust.ts",
+      "corpusRelativePath": "extensions/project-trust.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/project-trust.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "78781c1f2a1613cf31c02a29ff6a6abd86b60bdf34343465e46cd85c01491578",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "no non-Pi external imports observed",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 5,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [
+        "project_trust",
+        "session_start"
+      ],
+      "uiCoupling": true,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": false,
+      "externalDependencies": [],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [
+          "project_trust",
+          "session_start"
+        ],
+        "ui": true,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-coding-agent"
+        ],
+        "externalDependencies": []
+      }
+    },
+    {
+      "id": "confirm-destructive",
+      "name": "confirm-destructive",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/confirm-destructive.ts",
+      "corpusRelativePath": "extensions/confirm-destructive.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/confirm-destructive.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "55502f82109df07e922ef3ec41af1b1a5ed33d4d6d56076654ab2bc88e2e0888",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "no non-Pi external imports observed",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 5,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [
+        "session_before_fork",
+        "session_before_switch"
+      ],
+      "uiCoupling": true,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": true,
+      "childProcessUsage": false,
+      "externalDependencies": [],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [
+          "session_before_fork",
+          "session_before_switch"
+        ],
+        "ui": true,
+        "sessionManager": true,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-coding-agent"
+        ],
+        "externalDependencies": []
+      }
+    },
+    {
+      "id": "dirty-repo-guard",
+      "name": "dirty-repo-guard",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/dirty-repo-guard.ts",
+      "corpusRelativePath": "extensions/dirty-repo-guard.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/dirty-repo-guard.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "0037a69abdf4cf98181db799bef5bdee8981861315eb82ddab78126c2b0f13c4",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "no non-Pi external imports observed",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 5,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [
+        "session_before_fork",
+        "session_before_switch"
+      ],
+      "uiCoupling": true,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": true,
+      "externalDependencies": [],
+      "phaseTags": [
+        "git"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [
+          "session_before_fork",
+          "session_before_switch"
+        ],
+        "ui": true,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": true,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-coding-agent"
+        ],
+        "externalDependencies": []
+      }
+    },
+    {
+      "id": "sandbox",
+      "name": "sandbox",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/sandbox/index.ts",
+      "corpusRelativePath": "extensions/sandbox/index.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/sandbox/index.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "b5e527aac27254002f27b8bb9de7bc62e242e39eeb7c963683096039e0aa173e",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "native-only: external dependency review required",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 6,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [
+        "session_shutdown",
+        "session_start",
+        "user_bash"
+      ],
+      "uiCoupling": true,
+      "commandsRegistered": 1,
+      "sessionManagerUsage": false,
+      "childProcessUsage": true,
+      "externalDependencies": [
+        "@anthropic-ai/sandbox-runtime"
+      ],
+      "phaseTags": [
+        "implementation",
+        "testing"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 1,
+        "registerCommand": 1,
+        "hooks": [
+          "session_shutdown",
+          "session_start",
+          "user_bash"
+        ],
+        "ui": true,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": true,
+        "mutableTopLevel": false,
+        "imports": [
+          "node:child_process",
+          "node:fs",
+          "node:path",
+          "@anthropic-ai/sandbox-runtime",
+          "@earendil-works/pi-coding-agent",
+          "@earendil-works/pi-coding-agent"
+        ],
+        "externalDependencies": [
+          "@anthropic-ai/sandbox-runtime"
+        ]
+      }
+    },
+    {
+      "id": "gondolin",
+      "name": "gondolin",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/gondolin/index.ts",
+      "corpusRelativePath": "extensions/gondolin/index.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/gondolin/index.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "9a9897639de8127a2abe6bb0d00f0005cd9e9cf9d51fd15893a827e67326bf62",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "no non-Pi external imports observed",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 5,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [
+        "before_agent_start",
+        "session_shutdown",
+        "session_start",
+        "user_bash"
+      ],
+      "uiCoupling": true,
+      "commandsRegistered": 1,
+      "sessionManagerUsage": false,
+      "childProcessUsage": true,
+      "externalDependencies": [],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 7,
+        "registerCommand": 1,
+        "hooks": [
+          "before_agent_start",
+          "session_shutdown",
+          "session_start",
+          "user_bash"
+        ],
+        "ui": true,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": true,
+        "mutableTopLevel": false,
+        "imports": [
+          "node:path",
+          "@earendil-works/gondolin",
+          "@earendil-works/pi-coding-agent",
+          "@earendil-works/pi-coding-agent"
+        ],
+        "externalDependencies": []
+      }
+    },
+    {
+      "id": "structured-output",
+      "name": "structured-output",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/structured-output.ts",
+      "corpusRelativePath": "extensions/structured-output.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/structured-output.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "72a3a665ce3de1419c837db6eb8a0e7a890310c6e02e4d59c454e5c9514c15ec",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "native-only: external dependency review required",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 7,
+      "recommendedPolicy": "Native lazy activation pending lifecycle qualification",
+      "lifecycleClass": "native-lazy-candidate",
+      "stateful": false,
+      "lifecycleHooks": [],
+      "uiCoupling": false,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": false,
+      "externalDependencies": [
+        "typebox"
+      ],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": true,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Runtime qualification failed: The isolated worker cannot resolve @earendil-works/pi-tui from the copied extension source.",
+      "measurement": {
+        "baselineRss": [
+          41398272,
+          41422848,
+          41373696
+        ],
+        "importCost": "unmeasured: load failed before import completed",
+        "status": "failed",
+        "evidence": "data/qualification/structured-output-worker-2026-09-17.json"
+      },
+      "measurementStatus": "failed",
+      "staticAudit": {
+        "registerTool": 1,
+        "registerCommand": 0,
+        "hooks": [],
+        "ui": false,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-coding-agent",
+          "@earendil-works/pi-tui",
+          "typebox"
+        ],
+        "externalDependencies": [
+          "typebox"
+        ]
+      }
+    },
+    {
+      "id": "truncated-tool",
+      "name": "truncated-tool",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/truncated-tool.ts",
+      "corpusRelativePath": "extensions/truncated-tool.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/truncated-tool.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "4ed5fbeb6da53eab8d1e04721d77961b8d1b3bf5e11d1512a17fc5a3f58f9955",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "native-only: external dependency review required",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 6,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [],
+      "uiCoupling": false,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": true,
+      "externalDependencies": [
+        "typebox"
+      ],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 1,
+        "registerCommand": 0,
+        "hooks": [],
+        "ui": false,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": true,
+        "mutableTopLevel": false,
+        "imports": [
+          "node:fs/promises",
+          "@earendil-works/pi-coding-agent",
+          "@earendil-works/pi-coding-agent",
+          "@earendil-works/pi-tui",
+          "child_process",
+          "os",
+          "path",
+          "typebox"
+        ],
+        "externalDependencies": [
+          "typebox"
+        ]
+      }
+    },
+    {
+      "id": "git-checkpoint",
+      "name": "git-checkpoint",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/git-checkpoint.ts",
+      "corpusRelativePath": "extensions/git-checkpoint.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/git-checkpoint.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "b60c85f797091a1f21ccb2a998027c6229fe995bdd62dbb1cdcc22946768f40b",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "no non-Pi external imports observed",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 7,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [
+        "agent_settled",
+        "session_before_fork",
+        "tool_result",
+        "turn_start"
+      ],
+      "uiCoupling": true,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": true,
+      "childProcessUsage": true,
+      "externalDependencies": [],
+      "phaseTags": [
+        "git"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [
+          "agent_settled",
+          "session_before_fork",
+          "tool_result",
+          "turn_start"
+        ],
+        "ui": true,
+        "sessionManager": true,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": true,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-coding-agent"
+        ],
+        "externalDependencies": []
+      }
+    },
+    {
+      "id": "trigger-compact",
+      "name": "trigger-compact",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/trigger-compact.ts",
+      "corpusRelativePath": "extensions/trigger-compact.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/trigger-compact.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "92c3b831f9f7bf01a3e0a2df11f4e404f5ac5843000b94e8340a5d78f3cb3add",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "no non-Pi external imports observed",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 5,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [
+        "turn_end"
+      ],
+      "uiCoupling": true,
+      "commandsRegistered": 1,
+      "sessionManagerUsage": false,
+      "childProcessUsage": false,
+      "externalDependencies": [],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 1,
+        "hooks": [
+          "turn_end"
+        ],
+        "ui": true,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-coding-agent"
+        ],
+        "externalDependencies": []
+      }
+    },
+    {
+      "id": "reload-runtime",
+      "name": "reload-runtime",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/reload-runtime.ts",
+      "corpusRelativePath": "extensions/reload-runtime.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/reload-runtime.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "911f26b872860a551572fa1d94d251ddd476d4ea9483b6052e9658d2784b38fc",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "native-only: external dependency review required",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 5,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [],
+      "uiCoupling": false,
+      "commandsRegistered": 1,
+      "sessionManagerUsage": false,
+      "childProcessUsage": false,
+      "externalDependencies": [
+        "typebox"
+      ],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 1,
+        "registerCommand": 1,
+        "hooks": [],
+        "ui": false,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-coding-agent",
+          "typebox"
+        ],
+        "externalDependencies": [
+          "typebox"
+        ]
+      }
+    },
+    {
+      "id": "handoff",
+      "name": "handoff",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/handoff.ts",
+      "corpusRelativePath": "extensions/handoff.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/handoff.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "ea07b6f680357b677d0f43f0016961ee8cb1331d37ae113e9466a3acffb2e381",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "no non-Pi external imports observed",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 5,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [],
+      "uiCoupling": true,
+      "commandsRegistered": 1,
+      "sessionManagerUsage": true,
+      "childProcessUsage": false,
+      "externalDependencies": [],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 1,
+        "hooks": [],
+        "ui": true,
+        "sessionManager": true,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-agent-core",
+          "@earendil-works/pi-ai",
+          "@earendil-works/pi-coding-agent",
+          "@earendil-works/pi-coding-agent"
+        ],
+        "externalDependencies": []
+      }
+    },
+    {
+      "id": "dynamic-resources",
+      "name": "dynamic-resources",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/dynamic-resources/index.ts",
+      "corpusRelativePath": "extensions/dynamic-resources/index.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/dynamic-resources/index.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "dfbc49418fe46ebc9696fa335709df2ed0d4c4703da8c1ad0eb317d11fce8433",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "no non-Pi external imports observed",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 5,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [
+        "resources_discover"
+      ],
+      "uiCoupling": false,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": false,
+      "externalDependencies": [],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [
+          "resources_discover"
+        ],
+        "ui": false,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "node:path",
+          "node:url",
+          "@earendil-works/pi-coding-agent"
+        ],
+        "externalDependencies": []
+      }
+    },
+    {
+      "id": "claude-rules",
+      "name": "claude-rules",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/claude-rules.ts",
+      "corpusRelativePath": "extensions/claude-rules.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/claude-rules.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "8a935f14f62c1c1a3e937f5c912c2215e25aa5fa591716e23c86224ce1dc34cd",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "no non-Pi external imports observed",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 5,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [
+        "before_agent_start",
+        "session_start"
+      ],
+      "uiCoupling": true,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": false,
+      "externalDependencies": [],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [
+          "before_agent_start",
+          "session_start"
+        ],
+        "ui": true,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "node:fs",
+          "node:path",
+          "@earendil-works/pi-coding-agent"
+        ],
+        "externalDependencies": []
+      }
+    },
+    {
+      "id": "interactive-shell",
+      "name": "interactive-shell",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/interactive-shell.ts",
+      "corpusRelativePath": "extensions/interactive-shell.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/interactive-shell.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "36a7efb5b132e666c643129ce09c3f83f56aed9924563e6b7269e0e126611ecc",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "no non-Pi external imports observed",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 5,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [
+        "user_bash"
+      ],
+      "uiCoupling": true,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": true,
+      "externalDependencies": [],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [
+          "user_bash"
+        ],
+        "ui": true,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": true,
+        "mutableTopLevel": false,
+        "imports": [
+          "node:child_process",
+          "@earendil-works/pi-coding-agent"
+        ],
+        "externalDependencies": []
+      }
+    },
+    {
+      "id": "ssh",
+      "name": "ssh",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/ssh.ts",
+      "corpusRelativePath": "extensions/ssh.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/ssh.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "c03bdef919457013e3798d10250f34255742fd3dc79885ac3d321b34f6a1149d",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "no non-Pi external imports observed",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 5,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [
+        "before_agent_start",
+        "session_start",
+        "user_bash"
+      ],
+      "uiCoupling": true,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": true,
+      "externalDependencies": [],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 4,
+        "registerCommand": 0,
+        "hooks": [
+          "before_agent_start",
+          "session_start",
+          "user_bash"
+        ],
+        "ui": true,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": true,
+        "mutableTopLevel": false,
+        "imports": [
+          "node:child_process",
+          "@earendil-works/pi-coding-agent",
+          "@earendil-works/pi-coding-agent"
+        ],
+        "externalDependencies": []
+      }
+    },
+    {
+      "id": "auto-commit-on-exit",
+      "name": "auto-commit-on-exit",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/auto-commit-on-exit.ts",
+      "corpusRelativePath": "extensions/auto-commit-on-exit.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/auto-commit-on-exit.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "b89b5cb4c6f1f07b0b4291ab85a3c5f025d7d31ebb285821716502452b46af62",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "no non-Pi external imports observed",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 5,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [
+        "session_shutdown"
+      ],
+      "uiCoupling": true,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": true,
+      "childProcessUsage": true,
+      "externalDependencies": [],
+      "phaseTags": [
+        "git"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [
+          "session_shutdown"
+        ],
+        "ui": true,
+        "sessionManager": true,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": true,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-coding-agent"
+        ],
+        "externalDependencies": []
+      }
+    },
+    {
+      "id": "custom-compaction",
+      "name": "custom-compaction",
+      "provenanceClass": "pi-official-example",
+      "owner": "earendil-works",
+      "repository": "earendil-works/pi",
+      "sourcePath": "packages/coding-agent/examples/extensions/custom-compaction.ts",
+      "corpusRelativePath": "extensions/custom-compaction.ts",
+      "sourceUrl": "https://github.com/earendil-works/pi/blob/d981de1229ef899957bbe968bc8dcda02a21f477/packages/coding-agent/examples/extensions/custom-compaction.ts",
+      "sourceCommit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+      "sourceTag": "v0.85.1",
+      "contentHash": "ea797b3508fd8600526f381466e8b08bb84f3d234932a9d6ce512698527d0aa9",
+      "piCompatibility": "0.85.1",
+      "packageMetadata": {
+        "name": "@earendil-works/pi-coding-agent",
+        "version": "0.85.1",
+        "dependencies": {
+          "@earendil-works/chord": "^0.85.1",
+          "@earendil-works/pi-agent-core": "^0.85.1",
+          "@earendil-works/pi-ai": "^0.85.1",
+          "@earendil-works/pi-tui": "^0.85.1",
+          "@silvia-odwyer/photon-node": "0.3.4",
+          "chalk": "5.6.2",
+          "cross-spawn": "7.0.6",
+          "diff": "8.0.4",
+          "grok-mermaid": "0.2.2",
+          "highlight.js": "10.7.3",
+          "hosted-git-info": "9.0.3",
+          "ignore": "7.0.5",
+          "jiti": "2.7.0",
+          "minimatch": "10.2.5",
+          "proper-lockfile": "4.1.2",
+          "semver": "7.8.0",
+          "typebox": "1.3.7",
+          "undici": "8.9.0",
+          "yaml": "2.9.0"
+        }
+      },
+      "dependencyPolicyStatus": "no non-Pi external imports observed",
+      "description": "Official Pi example; audit-generated metadata.",
+      "usefulnessScore": 5,
+      "recommendedPolicy": "Native resident; schema may be hidden",
+      "lifecycleClass": "native-resident",
+      "stateful": true,
+      "lifecycleHooks": [
+        "session_before_compact"
+      ],
+      "uiCoupling": true,
+      "commandsRegistered": 0,
+      "sessionManagerUsage": false,
+      "childProcessUsage": false,
+      "externalDependencies": [],
+      "phaseTags": [
+        "implementation"
+      ],
+      "staticWorkerCandidate": false,
+      "runtimeQualifiedWorkerStreamable": false,
+      "reasonEvidence": "Native lifecycle required by static audit; worker streaming is disallowed.",
+      "measurement": {
+        "baselineRss": "unmeasured",
+        "importCost": "static complexity estimate pending",
+        "status": "unmeasured"
+      },
+      "measurementStatus": "unmeasured",
+      "staticAudit": {
+        "registerTool": 0,
+        "registerCommand": 0,
+        "hooks": [
+          "session_before_compact"
+        ],
+        "ui": true,
+        "sessionManager": false,
+        "setActiveTools": false,
+        "persistence": false,
+        "childProcess": false,
+        "mutableTopLevel": false,
+        "imports": [
+          "@earendil-works/pi-ai",
+          "@earendil-works/pi-coding-agent",
+          "@earendil-works/pi-coding-agent"
+        ],
+        "externalDependencies": []
+      }
+    }
+  ],
+  "architecturalPriorArt": [
+    {
+      "path": "packages/coding-agent/examples/extensions/tools.ts",
+      "exists": true
+    },
+    {
+      "path": "packages/coding-agent/examples/extensions/dynamic-tools.ts",
+      "exists": true
+    },
+    {
+      "path": "packages/coding-agent/examples/extensions/kimi-deferred-tools.ts",
+      "exists": true
+    },
+    {
+      "path": "packages/coding-agent/examples/extensions/tool-override.ts",
+      "exists": true
+    },
+    {
+      "path": "packages/coding-agent/examples/extensions/preset.ts",
+      "exists": true
+    }
+  ],
+  "capabilityGaps": [
+    {
+      "id": "web-research",
+      "status": "unsupported",
+      "evidence": "No Earendil-maintained web fetch/search capability was found in the audited requested corpus; community packages remain discovery-only."
+    }
+  ]
+}

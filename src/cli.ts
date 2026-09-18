@@ -1,156 +1,230 @@
 import { resolve, join } from "node:path";
 import { pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { existsSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import { readConfig, stateDir, defaultConfig } from "./config.js";
 import { buildCatalog, readCatalog, nativeArguments } from "./catalog.js";
-import { ToolRouter, LocalEmbedder } from "./router.js";
-import { ProcessPool } from "./pool.js";
-import { createTrace } from "./trace.js";
+import { ApiToolRouter } from "./router.js";
 import { createMoahExtension } from "./pi-extension.js";
 import { measurePreparation } from "./workflow.js";
+import { catalogForRouter, readOfficialCatalog } from "./official-catalog.js";
+import { runSuite } from "./runner.js";
+import { ensureLangSmithDataset, runLangSmithExperiment } from "./langsmith-eval.js";
+import type { Config } from "./types.js";
+
+function repoProfilesDir(): string {
+  const candidates = [
+    new URL("../benchmarks/profiles/", import.meta.url),
+    new URL("../../benchmarks/profiles/", import.meta.url),
+  ].map(url => fileURLToPath(url));
+  return candidates.find(dir => existsSync(dir)) ?? candidates[0];
+}
 
 export async function main(args = process.argv.slice(2)): Promise<void> {
   const [command = "help", ...rest] = args;
   const cwd = process.cwd();
+
   if (["help", "--help", "-h"].includes(command)) {
-    console.log(`MoAH — Pi + model-selected capabilities + demand-loaded tool processes
+    console.log(`MoAH — lean Pi fork with an API tool router
 
-  setup                  Index packages; prepare optional semantic search model if enabled
-  init                   Create portable project settings without overwriting an existing file
-  index                  Resolve all package resources; probe streaming candidates
-  route <request>        Diagnose local semantic ranking (does not activate tools)
-  demo [fetch <url>]     Run upstream webfetch (default: Pi's public README)
-  demo search <query>    Run upstream websearch through the process cache
-  doctor                 Inspect runtime, model files and catalog
-  catalog                Inspect indexed packages and last live capability snapshot
-  catalog-sync           Snapshot every package listed at pi.dev (metadata, no installation)
-  catalog-search <query> [--offset N]  Search the complete public snapshot offline, in pages
-  install <source>        Install a Pi package locally using Pi's own installer
-  list                   List packages using Pi
-  config                 Open Pi's project package configuration
-  bench <suite.json> [--dry-run]  Compare native Pi, resident MoAH and streaming MoAH
-  bench-controlled [--tail-steps N] [--config path]  Compare identical actions without a paid LLM
-  pi [Pi arguments]      Start original Pi with MoAH
-  dense [Pi arguments]   Start original Pi with the same packages loaded natively
+  init                   Create moah.config.json
+  index                  Index local Pi capabilities and verify the bundled corpus
+  route <request>        Test the API router against the bundled catalog
+  doctor                 Show runtime/router diagnostics
+  catalog                Show indexed packages
+  install <source>       Install a Pi package with Pi's package manager
+  list                   List installed Pi packages
+  config                 Open Pi's package configuration
+  baseline <profile>     Run a comparison baseline profile
+  bench <suite.json>     Run a comparison benchmark suite [--dry-run]
+  langsmith dataset <suite.json>          Create/load the LangSmith dataset
+  langsmith run <suite.json> <profile>    Run a LangSmith experiment
+  pi [Pi arguments]      Start Pi with MoAH
+  dense [Pi arguments]   Start Pi with every available package loaded natively
 
-Configuration: moah.config.json. Model downloads happen only during setup.
-In Pi: /moah, /moah dense, /moah sparse. Credentials and login remain managed by Pi.`);
+Set ${defaultConfig().router.apiKeyEnv} for the router model. The main agent
+model and login remain managed by Pi.`);
     return;
   }
+
   if (command === "init") {
     if (rest.length) throw new Error("Usage: moah init (inside your project)");
     await writeFile(join(cwd, "moah.config.json"), JSON.stringify(defaultConfig(), null, 2) + "\n", { flag: "wx" });
-    console.log("Created moah.config.json. Run moah index, then moah pi. Semantic retrieval is off by default; Pi manages model login.");
+    console.log(`Created moah.config.json. Set ${defaultConfig().router.apiKeyEnv}, then run moah index and moah pi.`);
     return;
   }
+
   if (["install", "remove", "update", "list", "config"].includes(command)) {
     if (["install", "remove"].includes(command) && rest.length !== 1) throw new Error(`Usage: moah ${command} <Pi source>`);
     const pi = await import("@earendil-works/pi-coding-agent");
     await measurePreparation(cwd, `pi-${command}`, () => pi.main([command, ...rest, ...(["install", "remove", "config"].includes(command) ? ["-l"] : [])]));
     return;
   }
+
   const config = await readConfig(resolve(cwd, "moah.config.json"));
-  if (command === "catalog-sync" || command === "catalog-search") {
-    const { syncPublicCatalog, readPublicCatalog, searchPublicCatalog } = await import("./public-catalog.js");
-    if (command === "catalog-sync") {
-      const result = await measurePreparation(cwd, "catalog-sync", () => syncPublicCatalog(cwd));
-      console.log(JSON.stringify({ total: result.total, pages: result.pages, contentHash: result.contentHash, capturedAt: result.capturedAt }));
-    } else {
-      const catalog = await readPublicCatalog(cwd);
-      if (!catalog) throw new Error("Run catalog-sync first");
-      const offsetIndex = rest.indexOf("--offset");
-      const offset = offsetIndex < 0 ? 0 : Number(rest[offsetIndex + 1]);
-      if (!Number.isSafeInteger(offset) || offset < 0 || (offsetIndex >= 0 && rest.indexOf("--offset", offsetIndex + 1) >= 0)) throw new Error("--offset must be one nonnegative integer");
-      const query = rest.filter((_, i) => offsetIndex < 0 || (i !== offsetIndex && i !== offsetIndex + 1)).join(" ");
-      const found = searchPublicCatalog(query, catalog.packages);
-      const page = found.slice(offset, offset + config.selection.catalogPageSize);
-      console.log(JSON.stringify({ total: found.length, offset, nextOffset: offset + page.length < found.length ? offset + page.length : null, packages: page }, null, 2));
-    }
-    return;
-  }
-  if (command === "bench-controlled") {
-    if (rest.length % 2 || rest.some((v, i) => i % 2 === 0 && !["--tail-steps", "--config"].includes(v))) throw new Error("Usage: moah bench-controlled [--tail-steps N] [--config path]");
-    await import("../scripts/controlled-comparison.js"); return;
-  }
-  if (command === "bench") {
-    if (!rest[0] || rest.slice(1).some(a => a !== "--dry-run")) throw new Error("Usage: moah bench <suite.json> [--dry-run]");
-    const { runBenchmark } = await import("./benchmark.js");
-    const result = await runBenchmark(rest[0], rest.includes("--dry-run"), cwd);
-    if ("results" in result && result.results.some(r => !r.passed)) process.exitCode = 1;
-    return;
-  }
-  if (command === "index" || command === "setup") {
+
+  if (command === "index") {
     const catalog = await measurePreparation(cwd, "index", () => buildCatalog(config, cwd));
-    console.log(`Indexed ${catalog.length} package(s), ${catalog.flatMap(p => p.tools).length} streamed tool definitions. Native tools are discovered by Pi at runtime.`);
-    for (const p of catalog) console.log(`${p.id} [${p.mode}]: ${p.reason}`);
-    if (command === "setup" && config.router.enabled) {
-      console.log(`Preparing ${config.router.model} (${config.router.device}/${config.router.dtype})...`);
-      const embedder = new LocalEmbedder(config.router, join(stateDir(cwd), "models"), true);
-      try { await embedder.embed(["Cerca gli strumenti utili per questo compito."]); }
-      finally { await embedder.dispose(); }
-      console.log("Local model ready. Inference now works offline.");
-    }
+    console.log(`Indexed ${catalog.length} package(s).`);
+    for (const pkg of catalog) console.log(`${pkg.id} [${pkg.mode}]: ${pkg.reason}`);
     return;
   }
+
+  if (command === "bench") {
+    if (!rest[0]) throw new Error("Usage: moah bench <suite.json> [--dry-run]");
+    const dryRun = rest.includes("--dry-run");
+    const suitePath = rest.filter(arg => arg !== "--dry-run")[0];
+    const results = await runSuite(suitePath, cwd, dryRun);
+    console.log(JSON.stringify(results, null, 2));
+    return;
+  }
+
+  if (command === "langsmith") {
+    const [subcommand, suitePath, profile] = rest;
+    if (subcommand === "dataset") {
+      if (!suitePath) throw new Error("Usage: moah langsmith dataset <suite.json>");
+      console.log(JSON.stringify({ datasetName: await ensureLangSmithDataset(suitePath) }, null, 2));
+      return;
+    }
+    if (subcommand === "run") {
+      if (!suitePath || !profile) throw new Error("Usage: moah langsmith run <suite.json> <profile>");
+      console.log(JSON.stringify(await runLangSmithExperiment(suitePath, cwd, profile), null, 2));
+      return;
+    }
+    throw new Error("Usage: moah langsmith <dataset|run> ...");
+  }
+
   if (command === "doctor") {
-    const { listSupportedBackends } = await import("onnxruntime-node");
-    const report: Record<string, unknown> = { node: process.version, pi: "0.85.1", mode: "model-selected", selection: config.selection, backends: listSupportedBackends(), router: config.router,
-      modelCacheExists: existsSync(join(stateDir(cwd), "models")), mainModelLogin: "Managed by Pi; use /login in Pi" };
-    report.externalTools = Object.fromEntries(["ddgr", "pandoc", "sh"].map(name => {
+    const report: Record<string, unknown> = {
+      node: process.version,
+      pi: "0.85.1",
+      router: {
+        ...config.router,
+        apiKeyPresent: Boolean(process.env[config.router.apiKeyEnv]),
+      },
+      catalog: undefined as unknown,
+    };
+    try {
+      report.catalog = (await readCatalog(config, cwd)).map(pkg => ({
+        id: pkg.id,
+        mode: pkg.mode,
+        resident: pkg.nativeResident,
+        reason: pkg.reason,
+      }));
+    } catch (error) {
+      report.catalogError = String(error);
+      process.exitCode = 1;
+    }
+    report.externalTools = Object.fromEntries(["sh"].map(name => {
       const check = spawnSync(name, ["--version"], { windowsHide: true, timeout: 5000, encoding: "utf8" });
       return [name, { available: !check.error && check.status === 0 }];
     }));
-    try { report.catalog = (await readCatalog(config, cwd)).map(p => ({ id: p.id, mode: p.mode, reason: p.reason, resources: p.resources, tools: p.tools.map(t => t.name) })); }
-    catch (error) { report.catalogError = String(error); process.exitCode = 1; }
-    console.log(JSON.stringify(report, null, 2)); return;
+    console.log(JSON.stringify(report, null, 2));
+    return;
   }
-  const catalog = await readCatalog(config, cwd);
+
+  const loadCatalog = async () => {
+    try {
+      return await readCatalog(config, cwd);
+    } catch {
+      return await buildCatalog(config, cwd);
+    }
+  };
+
   if (command === "catalog") {
-    let snapshot: unknown;
-    try { snapshot = JSON.parse(await readFile(join(stateDir(cwd), "capabilities.json"), "utf8")); } catch { snapshot = "No live snapshot yet. Start Pi and use /moah catalog."; }
-    console.log(JSON.stringify({ packages: catalog, lastSessionSnapshot: snapshot }, null, 2)); return;
+    const catalog = await loadCatalog();
+    console.log(JSON.stringify(catalog, null, 2));
+    return;
   }
-  if (command === "dense") {
+
+  if (command === "baseline") {
+    if (!rest[0]) throw new Error("Usage: moah baseline <profile> [Pi arguments]");
+    const profileName = rest[0];
+    const piArgs = rest.slice(1);
+    const localProfilePath = join(cwd, "benchmarks", "profiles", `${profileName}.json`);
+    const bundledProfilePath = join(repoProfilesDir(), `${profileName}.json`);
+    const profilePath = profileName.endsWith(".json")
+      ? resolve(profileName)
+      : [localProfilePath, bundledProfilePath].find(path => existsSync(path))
+        ?? localProfilePath;
+    const profile = JSON.parse(await readFile(profilePath, "utf8")) as {
+      name: string;
+      mode: "pi-default" | "pi-full" | "moah-auto" | "moah-suggest" | "moah-oracle";
+    };
+    if (!["pi-default", "pi-full", "moah-auto", "moah-suggest", "moah-oracle"].includes(profile.mode)) {
+      throw new Error(`Unknown baseline mode: ${profile.mode}`);
+    }
+
     const pi = await import("@earendil-works/pi-coding-agent");
-    await pi.main([...nativeArguments(catalog, true), ...rest]); return;
+    console.warn(`MoAH baseline: ${profile.name} (${profile.mode})`);
+
+    if (profile.mode === "pi-default") {
+      await pi.main(piArgs);
+      return;
+    }
+    const catalog = await loadCatalog();
+    if (profile.mode === "pi-full") {
+      await pi.main([...nativeArguments(catalog, true), ...piArgs]);
+      return;
+    }
+
+    const routerMode = profile.mode === "moah-auto"
+      ? "auto"
+      : profile.mode === "moah-suggest"
+        ? "suggest"
+        : "oracle";
+    const baselineConfig = {
+      ...config,
+      router: {
+        ...config.router,
+        enabled: true,
+        mode: routerMode as Config["router"]["mode"],
+      },
+    };
+    await pi.main(
+      [...nativeArguments(catalog), ...piArgs],
+      { extensionFactories: [{ name: "moah", factory: createMoahExtension({ cwd, config: baselineConfig }) }] },
+    );
+    return;
   }
+
   if (command === "route") {
     if (!rest.length) throw new Error("Usage: moah route <request>");
+    const officialCatalog = await readOfficialCatalog();
+    const candidates = catalogForRouter(officialCatalog, config.router.baseTools);
+    const router = new ApiToolRouter(config.router);
+    console.log(JSON.stringify(await router.route(rest.join(" "), candidates), null, 2));
+    return;
+  }
+
+  if (command === "dense") {
+    const catalog = await loadCatalog();
     const pi = await import("@earendil-works/pi-coding-agent");
-    const builtin = [...pi.createCodingTools(cwd), pi.createGrepTool(cwd), pi.createFindTool(cwd), pi.createLsTool(cwd)];
-    const unique = [...new Map([...builtin, ...catalog.flatMap(p => p.tools)].map(t => [t.name, t])).values()];
-    const router = new ToolRouter(new LocalEmbedder(config.router, join(stateDir(cwd), "models")), config.router, join(stateDir(cwd), "embeddings"));
-    try { console.log(JSON.stringify(await router.route(rest.join(" "), unique), null, 2)); }
-    finally { await router.dispose(); } return;
+    await pi.main([...nativeArguments(catalog, true), ...rest]);
+    return;
   }
-  if (command === "demo") {
-    const name = rest[0] === "search" ? "websearch" : "webfetch";
-    if (rest[0] && !["fetch", "search"].includes(rest[0])) throw new Error("Usage: demo [fetch <url> | search <query>]");
-    if (name === "websearch" && rest.length < 2) throw new Error("Usage: demo search <query>");
-    if (!catalog.some(p => p.tools.some(t => t.name === name))) throw new Error(`Demo requires the configured upstream ${name} tool`);
-    const trace = createTrace(join(stateDir(cwd), "traces"));
-    const pool = new ProcessPool(catalog, cwd, config.cache, trace);
-    try {
-      console.log("Before execution:", pool.snapshot());
-      const args = name === "websearch"
-        ? { query: rest.slice(1).join(" "), limit: 3, region: null, safesearch: null, time: null }
-        : { url: rest[1] ?? "https://raw.githubusercontent.com/earendil-works/pi/main/README.md", max_chars: 2000, offset: 0 };
-      const result = await pool.execute(name, args, "demo");
-      console.log("Upstream result:", JSON.stringify(result));
-      if (result.isError) process.exitCode = 1;
-      console.log("Resident processes:", pool.snapshot());
-    } finally { await pool.close(); }
-    console.log("After release:", pool.snapshot()); return;
-  }
+
   if (command === "pi") {
+    const catalog = await loadCatalog();
     const pi = await import("@earendil-works/pi-coding-agent");
-    for (const p of catalog.filter(p => p.mode === "unavailable")) console.warn(`MoAH ${p.id}: ${p.reason}`);
-    await pi.main([...nativeArguments(catalog), ...rest], { extensionFactories: [{ name: "moah", factory: createMoahExtension({ cwd, config, catalog }) }] }); return;
+    for (const pkg of catalog.filter(pkg => pkg.mode === "unavailable")) {
+      console.warn(`MoAH ${pkg.id}: ${pkg.reason}`);
+    }
+    await pi.main(
+      [...nativeArguments(catalog), ...rest],
+      { extensionFactories: [{ name: "moah", factory: createMoahExtension({ cwd, config }) }] },
+    );
+    return;
   }
+
   throw new Error(`Unknown command: ${command}. Run moah help`);
 }
+
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
-  main().catch(error => { console.error(error instanceof Error ? error.message : error); process.exitCode = 1; });
+  main().catch(error => {
+    console.error(error instanceof Error ? error.message : error);
+    process.exitCode = 1;
+  });
 }

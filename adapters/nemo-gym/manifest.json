@@ -1,0 +1,16 @@
+{
+  "name": "moah-nemo-gym-adapter",
+  "version": "0.1.0",
+  "entrypoint": "src/index.ts",
+  "description": "Isolated-process adapter for evaluating the MoAH/Pi harness in NeMo Gym.",
+  "compatibility": {
+    "pi": "0.85.1",
+    "moahProfiles": [
+      "pi-default",
+      "pi-full",
+      "moah-auto",
+      "moah-suggest",
+      "moah-oracle"
+    ]
+  }
+}

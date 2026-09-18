@@ -1,0 +1,319 @@
+{
+  "schema": 1,
+  "pi": {
+    "commit": "d981de1229ef899957bbe968bc8dcda02a21f477",
+    "tag": "v0.85.1"
+  },
+  "capabilities": [
+    {
+      "id": "read",
+      "name": "read",
+      "description": "Read files and inspect workspace contents.",
+      "kind": "tool",
+      "activation": "tool",
+      "sourcePath": "packages/coding-agent/src/core/tools/read.ts",
+      "provenance": "pi-core",
+      "conflicts": []
+    },
+    {
+      "id": "edit",
+      "name": "edit",
+      "description": "Apply precise edits to existing files.",
+      "kind": "tool",
+      "activation": "tool",
+      "sourcePath": "packages/coding-agent/src/core/tools/edit.ts",
+      "provenance": "pi-core",
+      "conflicts": []
+    },
+    {
+      "id": "write",
+      "name": "write",
+      "description": "Create or overwrite files.",
+      "kind": "tool",
+      "activation": "tool",
+      "sourcePath": "packages/coding-agent/src/core/tools/write.ts",
+      "provenance": "pi-core",
+      "conflicts": []
+    },
+    {
+      "id": "bash",
+      "name": "bash",
+      "description": "Run shell commands locally.",
+      "kind": "tool",
+      "activation": "tool",
+      "sourcePath": "packages/coding-agent/src/core/tools/bash.ts",
+      "provenance": "pi-core",
+      "conflicts": []
+    },
+    {
+      "id": "grep",
+      "name": "grep",
+      "description": "Search file contents with regular expressions.",
+      "kind": "tool",
+      "activation": "tool",
+      "sourcePath": "packages/coding-agent/src/core/tools/grep.ts",
+      "provenance": "pi-core",
+      "conflicts": []
+    },
+    {
+      "id": "find",
+      "name": "find",
+      "description": "Find files by name or path pattern.",
+      "kind": "tool",
+      "activation": "tool",
+      "sourcePath": "packages/coding-agent/src/core/tools/find.ts",
+      "provenance": "pi-core",
+      "conflicts": []
+    },
+    {
+      "id": "ls",
+      "name": "ls",
+      "description": "List directory contents.",
+      "kind": "tool",
+      "activation": "tool",
+      "sourcePath": "packages/coding-agent/src/core/tools/ls.ts",
+      "provenance": "pi-core",
+      "conflicts": []
+    },
+    {
+      "id": "plan-mode",
+      "name": "plan-mode",
+      "description": "Read-only planning mode that disables writes and restricts bash.",
+      "kind": "command",
+      "activation": "manual",
+      "sourcePath": "packages/coding-agent/examples/extensions/plan-mode/index.ts",
+      "provenance": "pi-official-example",
+      "conflicts": ["edit", "write"]
+    },
+    {
+      "id": "subagent",
+      "name": "subagent",
+      "description": "Delegate a task to an isolated specialized subagent.",
+      "kind": "tool",
+      "activation": "tool",
+      "sourcePath": "packages/coding-agent/examples/extensions/subagent/index.ts",
+      "provenance": "pi-official-example",
+      "conflicts": []
+    },
+    {
+      "id": "todo",
+      "name": "todo",
+      "description": "Manage a persistent task checklist.",
+      "kind": "tool",
+      "activation": "tool",
+      "sourcePath": "packages/coding-agent/examples/extensions/todo.ts",
+      "provenance": "pi-official-example",
+      "conflicts": []
+    },
+    {
+      "id": "question",
+      "name": "question",
+      "description": "Ask the user a single question with options.",
+      "kind": "tool",
+      "activation": "tool",
+      "sourcePath": "packages/coding-agent/examples/extensions/question.ts",
+      "provenance": "pi-official-example",
+      "conflicts": []
+    },
+    {
+      "id": "questionnaire",
+      "name": "questionnaire",
+      "description": "Ask the user a structured single or multi-question form.",
+      "kind": "tool",
+      "activation": "tool",
+      "sourcePath": "packages/coding-agent/examples/extensions/questionnaire.ts",
+      "provenance": "pi-official-example",
+      "conflicts": []
+    },
+    {
+      "id": "permission-gate",
+      "name": "permission-gate",
+      "description": "Require confirmation for dangerous bash commands.",
+      "kind": "policy",
+      "activation": "manual",
+      "sourcePath": "packages/coding-agent/examples/extensions/permission-gate.ts",
+      "provenance": "pi-official-example",
+      "conflicts": ["bash"]
+    },
+    {
+      "id": "protected-paths",
+      "name": "protected-paths",
+      "description": "Block edits and writes to sensitive paths.",
+      "kind": "policy",
+      "activation": "manual",
+      "sourcePath": "packages/coding-agent/examples/extensions/protected-paths.ts",
+      "provenance": "pi-official-example",
+      "conflicts": ["edit", "write"]
+    },
+    {
+      "id": "project-trust",
+      "name": "project-trust",
+      "description": "Handle project-trust checks for project resources.",
+      "kind": "hook",
+      "activation": "manual",
+      "sourcePath": "packages/coding-agent/examples/extensions/project-trust.ts",
+      "provenance": "pi-official-example",
+      "conflicts": []
+    },
+    {
+      "id": "confirm-destructive",
+      "name": "confirm-destructive",
+      "description": "Confirm destructive session actions like clear, switch, or branch.",
+      "kind": "hook",
+      "activation": "manual",
+      "sourcePath": "packages/coding-agent/examples/extensions/confirm-destructive.ts",
+      "provenance": "pi-official-example",
+      "conflicts": []
+    },
+    {
+      "id": "dirty-repo-guard",
+      "name": "dirty-repo-guard",
+      "description": "Prevent session changes while the git tree is dirty.",
+      "kind": "policy",
+      "activation": "manual",
+      "sourcePath": "packages/coding-agent/examples/extensions/dirty-repo-guard.ts",
+      "provenance": "pi-official-example",
+      "conflicts": []
+    },
+    {
+      "id": "sandbox",
+      "name": "sandbox",
+      "description": "Run bash inside an OS-level sandbox with file and network restrictions.",
+      "kind": "tool-override",
+      "activation": "manual",
+      "sourcePath": "packages/coding-agent/examples/extensions/sandbox/index.ts",
+      "provenance": "pi-official-example",
+      "conflicts": ["bash"]
+    },
+    {
+      "id": "gondolin",
+      "name": "gondolin",
+      "description": "Run Pi tools inside a local Gondolin micro-VM.",
+      "kind": "tool-override",
+      "activation": "manual",
+      "sourcePath": "packages/coding-agent/examples/extensions/gondolin/index.ts",
+      "provenance": "pi-official-example",
+      "conflicts": ["read", "write", "edit", "bash", "ls", "find", "grep"]
+    },
+    {
+      "id": "structured-output",
+      "name": "structured_output",
+      "description": "Return a final structured answer and terminate the turn.",
+      "kind": "tool",
+      "activation": "tool",
+      "sourcePath": "packages/coding-agent/examples/extensions/structured-output.ts",
+      "provenance": "pi-official-example",
+      "conflicts": []
+    },
+    {
+      "id": "truncated-tool",
+      "name": "rg",
+      "description": "Ripgrep search with safe output truncation.",
+      "kind": "tool",
+      "activation": "tool",
+      "sourcePath": "packages/coding-agent/examples/extensions/truncated-tool.ts",
+      "provenance": "pi-official-example",
+      "conflicts": ["grep"]
+    },
+    {
+      "id": "git-checkpoint",
+      "name": "git-checkpoint",
+      "description": "Create git checkpoints for fork and restore.",
+      "kind": "hook",
+      "activation": "manual",
+      "sourcePath": "packages/coding-agent/examples/extensions/git-checkpoint.ts",
+      "provenance": "pi-official-example",
+      "conflicts": []
+    },
+    {
+      "id": "trigger-compact",
+      "name": "trigger-compact",
+      "description": "Trigger context compaction when a token threshold is exceeded.",
+      "kind": "hook",
+      "activation": "manual",
+      "sourcePath": "packages/coding-agent/examples/extensions/trigger-compact.ts",
+      "provenance": "pi-official-example",
+      "conflicts": []
+    },
+    {
+      "id": "reload-runtime",
+      "name": "reload_runtime",
+      "description": "Reload extensions, skills, prompts, themes, and context files.",
+      "kind": "tool",
+      "activation": "tool",
+      "sourcePath": "packages/coding-agent/examples/extensions/reload-runtime.ts",
+      "provenance": "pi-official-example",
+      "conflicts": []
+    },
+    {
+      "id": "handoff",
+      "name": "handoff",
+      "description": "Transfer context to a new focused session.",
+      "kind": "command",
+      "activation": "manual",
+      "sourcePath": "packages/coding-agent/examples/extensions/handoff.ts",
+      "provenance": "pi-official-example",
+      "conflicts": []
+    },
+    {
+      "id": "dynamic-resources",
+      "name": "dynamic-resources",
+      "description": "Expose bundled skills, prompts, and themes to Pi.",
+      "kind": "resource",
+      "activation": "manual",
+      "sourcePath": "packages/coding-agent/examples/extensions/dynamic-resources/index.ts",
+      "provenance": "pi-official-example",
+      "conflicts": []
+    },
+    {
+      "id": "claude-rules",
+      "name": "claude-rules",
+      "description": "List .claude/rules files in the system prompt.",
+      "kind": "hook",
+      "activation": "manual",
+      "sourcePath": "packages/coding-agent/examples/extensions/claude-rules.ts",
+      "provenance": "pi-official-example",
+      "conflicts": []
+    },
+    {
+      "id": "interactive-shell",
+      "name": "interactive-shell",
+      "description": "Run interactive terminal commands from user input.",
+      "kind": "hook",
+      "activation": "manual",
+      "sourcePath": "packages/coding-agent/examples/extensions/interactive-shell.ts",
+      "provenance": "pi-official-example",
+      "conflicts": []
+    },
+    {
+      "id": "ssh",
+      "name": "ssh",
+      "description": "Route read, write, edit, and bash to a remote host over SSH.",
+      "kind": "tool-override",
+      "activation": "manual",
+      "sourcePath": "packages/coding-agent/examples/extensions/ssh.ts",
+      "provenance": "pi-official-example",
+      "conflicts": ["read", "write", "edit", "bash"]
+    },
+    {
+      "id": "auto-commit-on-exit",
+      "name": "auto-commit-on-exit",
+      "description": "Automatically commit changes when the agent exits.",
+      "kind": "policy",
+      "activation": "manual",
+      "sourcePath": "packages/coding-agent/examples/extensions/auto-commit-on-exit.ts",
+      "provenance": "pi-official-example",
+      "conflicts": []
+    },
+    {
+      "id": "custom-compaction",
+      "name": "custom-compaction",
+      "description": "Replace default compaction with full-context summarization.",
+      "kind": "hook",
+      "activation": "manual",
+      "sourcePath": "packages/coding-agent/examples/extensions/custom-compaction.ts",
+      "provenance": "pi-official-example",
+      "conflicts": []
+    }
+  ]
+}

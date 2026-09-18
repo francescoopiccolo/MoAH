@@ -1,0 +1,61 @@
+{
+  "suite": "lean-suite-v2",
+  "repetitions": 2,
+  "timeoutMs": 180000,
+  "mainArgs": [
+    "--provider",
+    "openrouter",
+    "--model",
+    "openai/gpt-4o-mini"
+  ],
+  "profiles": [
+    "pi-default",
+    "pi-full",
+    "moah-auto",
+    "moah-suggest",
+    "moah-oracle"
+  ],
+  "tasks": [
+    {
+      "id": "write-answer",
+      "prompt": "Create answer.txt containing exactly the word hello.",
+      "oracleTools": ["write"],
+      "verify": "node -e \"const fs=require('fs'); const s=fs.readFileSync('answer.txt','utf8').trim(); if(s!=='hello') process.exit(1);\""
+    },
+    {
+      "id": "find-banana-line",
+      "prompt": "Read data.txt, find the 1-based line number of the word banana, and write only that number to answer.txt.",
+      "oracleTools": ["grep"],
+      "files": {
+        "data.txt": "apple\nbanana\ncherry\n"
+      },
+      "verify": "node -e \"const fs=require('fs'); const s=fs.readFileSync('answer.txt','utf8').trim(); if(s!=='2') process.exit(1);\""
+    },
+    {
+      "id": "count-lines",
+      "prompt": "Count the non-empty lines in numbers.txt and write the count to answer.txt.",
+      "oracleTools": ["read"],
+      "files": {
+        "numbers.txt": "one\ntwo\nthree\nfour\n"
+      },
+      "verify": "node -e \"const fs=require('fs'); const s=fs.readFileSync('answer.txt','utf8').trim(); if(s!=='4') process.exit(1);\""
+    },
+    {
+      "id": "find-target-file",
+      "prompt": "Find the file whose basename starts with target and write only the basename, without any path prefix, to answer.txt.",
+      "oracleTools": ["find"],
+      "files": {
+        "apple.txt": "a",
+        "banana.txt": "b",
+        "target-report.txt": "t"
+      },
+      "verify": "node -e \"const fs=require('fs'); const s=fs.readFileSync('answer.txt','utf8').trim(); if(s!=='target-report.txt') process.exit(1);\""
+    },
+    {
+      "id": "write-json",
+      "prompt": "Write answer.json containing a JSON object with a single property answer equal to 42.",
+      "oracleTools": ["write"],
+      "verify": "node -e \"const fs=require('fs'); const o=JSON.parse(fs.readFileSync('answer.json','utf8')); if(o.answer!==42) process.exit(1);\""
+    }
+  ]
+}

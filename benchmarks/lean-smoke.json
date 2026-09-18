@@ -1,0 +1,26 @@
+{
+  "suite": "lean-smoke",
+  "repetitions": 1,
+  "timeoutMs": 120000,
+  "mainArgs": [
+    "--provider",
+    "openrouter",
+    "--model",
+    "openai/gpt-4o-mini"
+  ],
+  "profiles": [
+    "pi-default",
+    "pi-full",
+    "moah-auto",
+    "moah-suggest",
+    "moah-oracle"
+  ],
+  "tasks": [
+    {
+      "id": "write-answer",
+      "prompt": "Create answer.txt containing exactly the word hello.",
+      "oracleTools": ["write"],
+      "verify": "node -e \"const fs=require('fs'); const s=fs.readFileSync('answer.txt','utf8').trim(); if(s!=='hello') process.exit(1);\""
+    }
+  ]
+}

@@ -1,13 +1,28 @@
-export interface ToolMetadata {
+export interface ToolCandidate {
   name: string;
-  label: string;
   description: string;
-  parameters: Record<string, unknown>;
-  promptSnippet?: string;
-  promptGuidelines?: string[];
-  executionMode?: "parallel" | "sequential";
-  constrainedSampling?: unknown;
-  customRendering?: boolean;
+}
+
+export interface ScoredTool {
+  name: string;
+  score: number;
+}
+
+export interface RouterUsage {
+  inputTokens: number;
+  outputTokens: number;
+  totalTokens: number;
+  cacheReadTokens?: number;
+  cacheWriteTokens?: number;
+  cost?: number;
+}
+
+export interface RouteResult {
+  selected: string[];
+  ranked: ScoredTool[];
+  elapsedMs: number;
+  usage?: RouterUsage;
+  model?: string;
 }
 
 export interface PackageSpec {
@@ -15,68 +30,47 @@ export interface PackageSpec {
   package?: string;
   version?: string;
   entry: string;
-  // Native is the fallback whenever the streaming contract cannot be established.
-  mode?: "auto" | "native" | "stream";
-  context?: "preserve" | "dynamic";
-  stateless?: boolean;
-  workerSdk?: "full" | "lazy";
+  provenance?: "pi-official-example" | "community-installed";
+  /** Loaded natively by Pi when MoAH starts. */
+  nativeResident?: boolean;
+  /** Visible to the API router when the package is loaded by Pi. */
+  routerEligible?: boolean;
+  sourceCommit?: string;
+  sourceHash?: string;
+  sourcePath?: string;
+  corpusId?: string;
 }
+
 export interface IndexedPackage {
   id: string;
+  corpusId?: string;
   entry: string;
   root: string;
-  fingerprint: string;
-  tools: ToolMetadata[];
-  workerSdk?: "full" | "lazy";
-  mode: "native" | "stream" | "unavailable";
-  reason: string;
   nativeSource: string;
-  context: "preserve" | "dynamic";
-  resources: { extensions: string[]; skills: string[]; prompts: string[]; themes: string[] };
+  mode: "native" | "unavailable";
+  provenance: NonNullable<PackageSpec["provenance"]>;
+  autoAcquire: boolean;
+  nativeResident: boolean;
+  routerEligible: boolean;
+  sourceHash?: string;
+  sourceCommit?: string;
+  reason: string;
 }
-export interface Capability {
-  id: string;
-  name: string;
-  description: string;
-  kind: "tool" | "command" | "skill" | "prompt" | "package" | "theme";
-  execution: "core" | "native" | "stream";
-  availability: "available" | "inactive" | "unavailable" | "unknown";
-  activation: "tool" | "pi-command" | "read-skill" | "native";
-  source: string;
-  action?: string;
-  packageId?: string;
-  prerequisites: "managed-by-pi" | "unknown";
-}
+
 export interface Config {
-  selection: {
-    maxActiveTools: number;
-    catalogPageSize: number;
-    descriptionCharacters: number;
-    resetOnPrompt: boolean;
-    releaseInactive: boolean;
+  baseline: {
+    enabled: boolean;
   };
   router: {
     enabled: boolean;
+    mode: "auto" | "suggest" | "oracle";
+    baseUrl: string;
     model: string;
-    device: "cpu" | "dml" | "cuda";
-    dtype: "q8" | "fp32";
-    topK: number;
-    minimumScore: number;
-    keepMargin: number;
-    pinnedTools: string[];
-    maxQueryCharacters: number;
-  };
-  cache: {
-    maxProcesses: number;
-    residentBudgetMb: number;
-    idleTtlMs: number;
-    loadTimeoutMs: number;
-    callTimeoutMs: number;
+    apiKeyEnv: string;
+    maxTools: number;
+    baseTools: string[];
   };
   packages: PackageSpec[];
 }
-export interface ToolCandidate { name: string; description: string; parameters?: unknown }
-export interface ScoredTool { name: string; score: number }
-export interface RouteResult { selected: string[]; ranked: ScoredTool[]; elapsedMs: number }
-export interface Embedder { embed(texts: string[]): Promise<number[][]>; dispose(): Promise<void> }
+
 export type Trace = (event: string, details: Record<string, unknown>) => void;

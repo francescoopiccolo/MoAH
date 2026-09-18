@@ -1,0 +1,15 @@
+{
+  "name": "moah-nemo-gym-adapter",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "External NeMo Gym adapter that drives MoAH/Pi as an isolated rollout process",
+  "scripts": {
+    "smoke": "tsx src/smoke.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  }
+}
