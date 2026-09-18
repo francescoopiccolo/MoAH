@@ -38,9 +38,9 @@
       "prompt": "Count the non-empty lines in numbers.txt and write the count to answer.txt.",
       "oracleTools": ["read"],
       "files": {
-        "numbers.txt": "one\ntwo\nthree\nfour\n"
+        "numbers.txt": "one\ntwo\nthree\n"
       },
-      "verify": "node -e \"const fs=require('fs'); const m=fs.readFileSync('answer.txt','utf8').match(/\\d+/); const n=m?Number(m[0]):NaN; if(n!==4) process.exit(1);\""
+      "verify": "node -e \"const fs=require('fs'); const m=fs.readFileSync('answer.txt','utf8').match(/\\d+/); const n=m?Number(m[0]):NaN; if(n!==3) process.exit(1);\""
     },
     {
       "id": "find-target-file",
