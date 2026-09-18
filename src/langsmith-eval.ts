@@ -31,6 +31,7 @@ export async function ensureLangSmithDataset(suitePath: string): Promise<string>
     metadata: {
       suite: suite.suite,
       oracleTools: task.oracleTools ?? [],
+      requiredTools: task.requiredTools ?? [],
     },
   })));
   return datasetName;

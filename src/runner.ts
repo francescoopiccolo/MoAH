@@ -13,6 +13,7 @@ export interface BenchmarkTask {
   files?: Record<string, string>;
   verify: string;
   oracleTools?: string[];
+  requiredTools?: string[];
 }
 
 export interface BenchmarkSuite {

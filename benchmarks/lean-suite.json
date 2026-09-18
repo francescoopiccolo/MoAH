@@ -56,6 +56,35 @@
       "prompt": "Write answer.json containing a JSON object with a single property answer equal to 42.",
       "oracleTools": ["write"],
       "verify": "node -e \"const fs=require('fs'); const o=JSON.parse(fs.readFileSync('answer.json','utf8')); if(o.answer!==42) process.exit(1);\""
+    },
+    {
+      "id": "count-error-lines",
+      "prompt": "Count the lines in logs.txt that contain the word error and write the count to answer.txt.",
+      "oracleTools": ["grep"],
+      "requiredTools": ["grep"],
+      "files": {
+        "logs.txt": "error: disk full\nwarning: low memory\nerror: timeout\nall clear\n"
+      },
+      "verify": "node -e \"const fs=require('fs'); const s=fs.readFileSync('answer.txt','utf8').trim(); if(s!=='2') process.exit(1);\""
+    },
+    {
+      "id": "multi-file-report",
+      "prompt": "List all .txt files in the workspace, sort them alphabetically, and write report.json with a files array and totalLines equal to the total number of non-empty lines across those files.",
+      "oracleTools": ["find", "ls"],
+      "requiredTools": ["find", "ls"],
+      "files": {
+        "a.txt": "apple\n",
+        "b.txt": "banana\ncherry\n",
+        "c.txt": "date\nelderberry\nfig\n"
+      },
+      "verify": "node -e \"const fs=require('fs'); const path=require('path'); const o=JSON.parse(fs.readFileSync('report.json','utf8')); const files=Array.isArray(o.files)?o.files.map(f=>path.basename(f)).sort():[]; const total=Number(o.totalLines); if(JSON.stringify(files)!==JSON.stringify(['a.txt','b.txt','c.txt'])||total!==6) process.exit(1);\""
+    },
+    {
+      "id": "todo-phase",
+      "prompt": "Create todo.txt with exactly two lines: review code, then fix bug. Mark the first item done and write only the remaining task to answer.txt.",
+      "oracleTools": ["todo"],
+      "requiredTools": ["todo"],
+      "verify": "node -e \"const fs=require('fs'); const s=fs.readFileSync('answer.txt','utf8').trim(); if(s!=='fix bug') process.exit(1);\""
     }
   ]
 }
