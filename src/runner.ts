@@ -59,7 +59,7 @@ function runCommand(
 ): Promise<{ code: number | null; stdout: string; stderr: string; timedOut: boolean; elapsedMs: number }> {
   return new Promise(resolveResult => {
     const start = performance.now();
-    const child = spawn(command, options.shell ? [] : args, {
+    const child = spawn(command, args, {
       cwd: options.cwd,
       env: options.env,
       windowsHide: true,
@@ -210,7 +210,7 @@ export async function runSingle(
       ? await runCommand(
           process.platform === "win32" ? "opencode.cmd" : "opencode",
           ["run", "--format", "json", "--model", suite.opencodeModel ?? "openrouter/openai/gpt-4o-mini", task.prompt],
-          { cwd: workspace, env, timeoutMs: suite.timeoutMs },
+          { cwd: workspace, env, timeoutMs: suite.timeoutMs, shell: true },
         )
       : await runCommand(
           command,
@@ -305,7 +305,7 @@ export async function runSuite(suitePath: string, cwd: string, dryRun = false): 
             ? await runCommand(
                 process.platform === "win32" ? "opencode.cmd" : "opencode",
                 ["run", "--format", "json", "--model", suite.opencodeModel ?? "openrouter/openai/gpt-4o-mini", task.prompt],
-                { cwd: workspace, env, timeoutMs: suite.timeoutMs },
+                { cwd: workspace, env, timeoutMs: suite.timeoutMs, shell: true },
               )
             : await runCommand(
                 command,
