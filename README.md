@@ -9,6 +9,8 @@ process orchestration. The bundled official Pi extensions live on disk; the
 router receives only compact one-line tool descriptions, not system prompts or
 agent-loop instructions.
 
+See [REPORT.md](REPORT.md) for the current comparison against Pi and OpenCode.
+
 ## Flow
 
 ```text

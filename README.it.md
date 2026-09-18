@@ -10,6 +10,8 @@ orchestrazione di processi worker. Le estensioni ufficiali restano su disco; il
 router riceve solo descrizioni sintetiche dei tool, non i system prompt o le
 istruzioni del loop agente.
 
+Vedi [REPORT.md](REPORT.md) per il confronto attuale con Pi e OpenCode.
+
 ## Flusso
 
 ```text
