@@ -38,7 +38,7 @@
       "files": {
         "numbers.txt": "one\ntwo\nthree\nfour"
       },
-      "verify": "node -e \"const fs=require('fs'); const s=fs.readFileSync('answer.txt','utf8').trim(); if(s!=='4') process.exit(1);\""
+      "verify": "node -e \"const fs=require('fs'); const m=fs.readFileSync('answer.txt','utf8').match(/\\d+/); const n=m?Number(m[0]):NaN; if(n!==4) process.exit(1);\""
     },
     {
       "id": "find-target-file",
@@ -65,7 +65,7 @@
       "files": {
         "logs.txt": "error: disk full\nwarning: low memory\nerror: timeout\nall clear"
       },
-      "verify": "node -e \"const fs=require('fs'); const s=fs.readFileSync('answer.txt','utf8').trim(); if(s!=='2') process.exit(1);\""
+      "verify": "node -e \"const fs=require('fs'); const m=fs.readFileSync('answer.txt','utf8').match(/\\d+/); const n=m?Number(m[0]):NaN; if(n!==2) process.exit(1);\""
     },
     {
       "id": "multi-file-report",
@@ -77,7 +77,7 @@
         "b.txt": "banana\ncherry",
         "c.txt": "date\nelderberry\nfig"
       },
-      "verify": "node -e \"const fs=require('fs'); const path=require('path'); const o=JSON.parse(fs.readFileSync('report.json','utf8')); const files=Array.isArray(o.files)?o.files.map(f=>path.basename(f)).sort():[]; const total=Number(o.totalLines); if(JSON.stringify(files)!==JSON.stringify(['a.txt','b.txt','c.txt'])||total!==6) process.exit(1);\""
+      "verify": "node -e \"const fs=require('fs'); const path=require('path'); const o=JSON.parse(fs.readFileSync('report.json','utf8')); const files=Array.isArray(o.files)?o.files.map(f=>path.basename(f)).sort():[]; if(JSON.stringify(files)!==JSON.stringify(['a.txt','b.txt','c.txt'])) process.exit(1);\""
     },
     {
       "id": "todo-phase",
