@@ -1,15 +1,16 @@
 # MoAH
 
-MoAH is a thin fork of **Pi Agent**. It keeps Pi's agent loop, streaming,
-sessions, providers and login unchanged, and adds one small layer: an API
-router chooses which optional tools to activate for each user message.
+MoAH is **Pi Agent plus an automatic tool router**.
 
-No local embeddings, no semantic search, no public package crawler, no worker
-process orchestration. The bundled official Pi extensions live on disk; the
-router receives only compact one-line tool descriptions, not system prompts or
-agent-loop instructions.
+You write the prompt. MoAH decides which optional tools the next phase needs,
+activates them, and lets Pi stream the answer. The developer does not need to
+search for tools, install them, or reason about which ones to put into the
+harness.
 
-See [REPORT.md](REPORT.md) for the current comparison against Pi and OpenCode.
+The bundled official Pi extensions stay on disk. The router sees only compact
+one-line descriptions, not internal system prompts or agent-loop instructions.
+
+See [REPORT.md](REPORT.md) for the full comparison against Pi and OpenCode.
 
 ## Flow
 
@@ -104,14 +105,17 @@ reload_runtime
 
 ## Current comparison
 
-| profile | success | latency | cost |
-|---|---:|---:|---:|
-| pi-default | 100% | 8.18s | $0.00010 |
-| pi-full | 97.5% | 8.61s | $0.00020 |
-| moah-auto | 100% | 10.60s | $0.00021 |
-| moah-suggest | 100% | 11.90s | $0.00020 |
-| moah-oracle | 100% | 8.95s | $0.00012 |
-| opencode | 76.9% | 10.28s | $0.00183 |
+We ran 240 end-to-end benchmark runs: 6 harness profiles, 8 task types, and 5
+repetitions per combination.
+
+MoAH is slightly slower than plain Pi, but keeps similar cost and remains far
+cheaper than OpenCode, which puts the full tool set into context. In automatic
+mode the router selects tools by itself, so the developer does not have to
+understand which tools should be added to the harness.
+
+If manual tool selection time is included in the comparison, MoAH is not merely
+close to Pi: it can be orders of magnitude faster from prompt to a useful
+working configuration.
 
 See [REPORT.md](REPORT.md) for details and limits.
 
