@@ -38,7 +38,7 @@
       "prompt": "Count the non-empty lines in numbers.txt and write the count to answer.txt.",
       "oracleTools": ["read"],
       "files": {
-        "numbers.txt": "one\ntwo\nthree\nfour"
+        "numbers.txt": "one\ntwo\nthree\nfour\n"
       },
       "verify": "node -e \"const fs=require('fs'); const m=fs.readFileSync('answer.txt','utf8').match(/\\d+/); const n=m?Number(m[0]):NaN; if(n!==4) process.exit(1);\""
     },
@@ -65,7 +65,7 @@
       "oracleTools": ["grep"],
       "requiredTools": ["grep"],
       "files": {
-        "logs.txt": "error: disk full\nwarning: low memory\nerror: timeout\nall clear"
+        "logs.txt": "error: disk full\nwarning: low memory\nerror: timeout\nall clear\n"
       },
       "verify": "node -e \"const fs=require('fs'); const m=fs.readFileSync('answer.txt','utf8').match(/\\d+/); const n=m?Number(m[0]):NaN; if(n!==2) process.exit(1);\""
     },

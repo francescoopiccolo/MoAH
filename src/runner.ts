@@ -109,6 +109,34 @@ function parseJsonEvents(stdout: string): any[] {
 
 function collectMainMetrics(stdout: string): Record<string, unknown> {
   const events = parseJsonEvents(stdout);
+  const stepFinishes = events.filter(event => event?.type === "step_finish");
+  if (stepFinishes.length > 0) {
+    const last = stepFinishes.at(-1)?.part;
+    const tokens = last?.tokens;
+    const totalCost = stepFinishes.reduce((sum, event) => sum + Number(event?.part?.cost ?? 0), 0);
+    const textEvents = events
+      .filter(event => event?.type === "text")
+      .map(event => event?.part?.text)
+      .filter((text): text is string => typeof text === "string")
+      .join("\n");
+    return {
+      eventCount: events.length,
+      stepFinishes: stepFinishes.length,
+      toolEvents: events.filter(event => ["tool_use", "tool_result"].includes(event?.type)).length,
+      ...(tokens ? {
+        usage: {
+          input: Number(tokens.input ?? 0),
+          output: Number(tokens.output ?? 0),
+          cacheRead: Number(tokens.cache?.read ?? 0),
+          cacheWrite: Number(tokens.cache?.write ?? 0),
+          reasoning: Number(tokens.reasoning ?? 0),
+          totalTokens: Number(tokens.total ?? 0),
+          cost: { total: totalCost },
+        },
+      } : {}),
+      ...(textEvents ? { finalText: tail(textEvents, 3000) } : {}),
+    };
+  }
   const usageEvents = events.filter(event => event?.type === "message_update" && event.usage);
   const messageEndEvents = events.filter(event => event?.type === "message_end");
   const lastMessageEnd = messageEndEvents.at(-1);
