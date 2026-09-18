@@ -75,27 +75,45 @@ router model. Inside Pi, use `/login` and `/model` as usual for the main agent.
 discovered from Pi's `getAllTools()`, so a user-installed native Pi package can
 be routed the same way once Pi loads it.
 
-## LangSmith tracing
+## Default tools
 
-Tracing is optional. Set:
+Base tools always active:
 
-```sh
-export LANGSMITH_TRACING=true
-export LANGSMITH_API_KEY=...
-export LANGSMITH_PROJECT=moah
+```text
+read
+bash
+powershell
+edit
+write
 ```
 
-MoAH creates a session root run, one `turn` child per user message, and a
-`router` LLM child with selected tools, ranked candidates, elapsed time and
-router token usage when the provider reports it.
+Official optional tools available to the router:
 
-You can also create a LangSmith dataset and run an experiment from a benchmark
-suite:
-
-```sh
-moah langsmith dataset benchmarks/lean-suite.json
-moah langsmith run benchmarks/lean-suite.json moah-auto
+```text
+grep
+find
+ls
+subagent
+todo
+question
+questionnaire
+structured_output
+rg
+reload_runtime
 ```
+
+## Current comparison
+
+| profile | success | latency | cost |
+|---|---:|---:|---:|
+| pi-default | 100% | 8.18s | $0.00010 |
+| pi-full | 97.5% | 8.61s | $0.00020 |
+| moah-auto | 100% | 10.60s | $0.00021 |
+| moah-suggest | 100% | 11.90s | $0.00020 |
+| moah-oracle | 100% | 8.95s | $0.00012 |
+| opencode | 76.9% | 10.28s | $0.00183 |
+
+See [REPORT.md](REPORT.md) for details and limits.
 
 ## Controls in Pi
 
@@ -121,9 +139,3 @@ moah dense
 
 `moah dense` starts original Pi with every available package loaded natively;
 MoAH routing is not active in that mode.
-
-## NeMo Gym adapter
-
-A separate external adapter is in
-[adapters/nemo-gym](adapters/nemo-gym). It drives MoAH/Pi as an isolated
-process per rollout and keeps NeMo Gym infrastructure outside the MoAH runtime.

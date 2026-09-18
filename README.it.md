@@ -74,26 +74,45 @@ I `baseTools` restano attivi quando Pi li espone. I tool opzionali vengono
 scoperti da `getAllTools()` di Pi: un pacchetto Pi nativo installato può essere
 gestito allo stesso modo, una volta caricato da Pi.
 
-## Tracciamento LangSmith
+## Tool di default
 
-Il tracciamento è opzionale:
+Tool base sempre attivi:
 
-```sh
-export LANGSMITH_TRACING=true
-export LANGSMITH_API_KEY=...
-export LANGSMITH_PROJECT=moah
+```text
+read
+bash
+powershell
+edit
+write
 ```
 
-MoAH crea un run radice per sessione, un child `turn` per messaggio utente e
-un child LLM `router` con selezione, ranking, latenza e usage del router
-quando il provider lo fornisce.
+Tool opzionali ufficiali disponibili al router:
 
-Puoi anche creare un dataset LangSmith ed eseguire un esperimento da una suite:
-
-```sh
-moah langsmith dataset benchmarks/lean-suite.json
-moah langsmith run benchmarks/lean-suite.json moah-auto
+```text
+grep
+find
+ls
+subagent
+todo
+question
+questionnaire
+structured_output
+rg
+reload_runtime
 ```
+
+## Confronto attuale
+
+| profilo | successo | latenza | costo |
+|---|---:|---:|---:|
+| pi-default | 100% | 8.18s | $0.00010 |
+| pi-full | 97.5% | 8.61s | $0.00020 |
+| moah-auto | 100% | 10.60s | $0.00021 |
+| moah-suggest | 100% | 11.90s | $0.00020 |
+| moah-oracle | 100% | 8.95s | $0.00012 |
+| opencode | 76.9% | 10.28s | $0.00183 |
+
+Vedi [REPORT.md](REPORT.md) per dettagli e limiti.
 
 ## Controlli dentro Pi
 
@@ -119,9 +138,3 @@ moah dense
 
 `moah dense` avvia Pi originale con tutti i pacchetti disponibili in modo
 nativo; in quella modalità il routing MoAH non è attivo.
-
-## Adapter NeMo Gym
-
-Un adapter esterno separato è disponibile in
-[adapters/nemo-gym](adapters/nemo-gym). Avvia MoAH/Pi come processo isolato
-per rollout e mantiene l'infrastruttura NeMo Gym fuori dal runtime MoAH.

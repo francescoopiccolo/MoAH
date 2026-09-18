@@ -10,16 +10,16 @@ Suite: `lean-suite-v3`, 8 task, 5 ripetizioni per profilo.
 
 | profilo | successo | latenza media | costo medio | router token |
 |---|---:|---:|---:|---:|
-| pi-default | 92.5% | 6.55s | $0.00010 | 0 |
-| pi-full | 92.5% | 7.71s | $0.00021 | 0 |
-| moah-auto | 97.5% | 9.02s | $0.00021 | 262.6 |
-| moah-suggest | 90.0% | 9.10s | $0.00020 | 262.1 |
-| moah-oracle | 87.5% | 6.82s | $0.00011 | 0 |
-| opencode | 84.2% | 9.51s | $0.0018 | 0 |
+| pi-default | 100% | 8.18s | $0.00010 | 0 |
+| pi-full | 97.5% | 8.61s | $0.00020 | 0 |
+| moah-auto | 100% | 10.60s | $0.00021 | 262.6 |
+| moah-suggest | 100% | 11.90s | $0.00020 | 262.9 |
+| moah-oracle | 100% | 8.95s | $0.00012 | 0 |
+| opencode | 76.9% | 10.28s | $0.00183 | 0 |
 
 ## Cosa emerge
 
-- `moah-auto` ha il successo più alto su questa suite.
+- `pi-default`, `moah-auto`, `moah-suggest` e `moah-oracle` raggiungono il 100% su questa suite.
 - `pi-default` resta il più veloce ed economico quando i task sono semplici.
 - `pi-full` ha lo stesso costo di MoAH, ma un successo inferiore.
 - OpenCode è il più costoso e ha il successo più basso su questi task.
