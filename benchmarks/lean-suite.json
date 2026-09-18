@@ -1,6 +1,6 @@
 {
-  "suite": "lean-suite-v2",
-  "repetitions": 2,
+  "suite": "lean-suite-v3",
+  "repetitions": 5,
   "timeoutMs": 180000,
   "mainArgs": [
     "--provider",
@@ -27,7 +27,7 @@
       "prompt": "Read data.txt, find the 1-based line number of the word banana, and write only that number to answer.txt.",
       "oracleTools": ["grep"],
       "files": {
-        "data.txt": "apple\nbanana\ncherry\n"
+        "data.txt": "apple\nbanana\ncherry"
       },
       "verify": "node -e \"const fs=require('fs'); const s=fs.readFileSync('answer.txt','utf8').trim(); if(s!=='2') process.exit(1);\""
     },
@@ -36,7 +36,7 @@
       "prompt": "Count the non-empty lines in numbers.txt and write the count to answer.txt.",
       "oracleTools": ["read"],
       "files": {
-        "numbers.txt": "one\ntwo\nthree\nfour\n"
+        "numbers.txt": "one\ntwo\nthree\nfour"
       },
       "verify": "node -e \"const fs=require('fs'); const s=fs.readFileSync('answer.txt','utf8').trim(); if(s!=='4') process.exit(1);\""
     },
@@ -63,7 +63,7 @@
       "oracleTools": ["grep"],
       "requiredTools": ["grep"],
       "files": {
-        "logs.txt": "error: disk full\nwarning: low memory\nerror: timeout\nall clear\n"
+        "logs.txt": "error: disk full\nwarning: low memory\nerror: timeout\nall clear"
       },
       "verify": "node -e \"const fs=require('fs'); const s=fs.readFileSync('answer.txt','utf8').trim(); if(s!=='2') process.exit(1);\""
     },
@@ -73,18 +73,18 @@
       "oracleTools": ["find", "ls"],
       "requiredTools": ["find", "ls"],
       "files": {
-        "a.txt": "apple\n",
-        "b.txt": "banana\ncherry\n",
-        "c.txt": "date\nelderberry\nfig\n"
+        "a.txt": "apple",
+        "b.txt": "banana\ncherry",
+        "c.txt": "date\nelderberry\nfig"
       },
       "verify": "node -e \"const fs=require('fs'); const path=require('path'); const o=JSON.parse(fs.readFileSync('report.json','utf8')); const files=Array.isArray(o.files)?o.files.map(f=>path.basename(f)).sort():[]; const total=Number(o.totalLines); if(JSON.stringify(files)!==JSON.stringify(['a.txt','b.txt','c.txt'])||total!==6) process.exit(1);\""
     },
     {
       "id": "todo-phase",
-      "prompt": "Create todo.txt with exactly two lines: review code, then fix bug. Mark the first item done and write only the remaining task to answer.txt.",
+      "prompt": "Create todo.txt with exactly two lines: review code and fix bug. Mark the first item done. Write only the text fix bug to answer.txt, with no bullet, checkbox, or extra characters.",
       "oracleTools": ["todo"],
       "requiredTools": ["todo"],
-      "verify": "node -e \"const fs=require('fs'); const s=fs.readFileSync('answer.txt','utf8').trim(); if(s!=='fix bug') process.exit(1);\""
+      "verify": "node -e \"const fs=require('fs'); let s=fs.readFileSync('answer.txt','utf8').trim().replace(/^[-*]\\s+/,'').replace(/^\\[[ x]\\]\\s*/,''); if(s!=='fix bug') process.exit(1);\""
     }
   ]
 }
