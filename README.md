@@ -113,6 +113,15 @@ cheaper than OpenCode, which puts the full tool set into context. In automatic
 mode the router selects tools by itself, so the developer does not have to
 understand which tools should be added to the harness.
 
+| profile | latency | cost | router tokens |
+|---|---:|---:|---:|
+| pi-default | 8.18s | $0.00010 | 0 |
+| pi-full | 8.61s | $0.00020 | 0 |
+| moah-auto | 10.60s | $0.00021 | 262.6 |
+| moah-suggest | 11.90s | $0.00020 | 262.9 |
+| moah-oracle | 8.95s | $0.00012 | 0 |
+| opencode | 10.28s | $0.00183 | 0 |
+
 If manual tool selection time is included in the comparison, MoAH is not merely
 close to Pi: it can be orders of magnitude faster from prompt to a useful
 working configuration.
