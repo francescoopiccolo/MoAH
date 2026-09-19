@@ -9,6 +9,8 @@ harness.
 
 The bundled official Pi extensions stay on disk. The router sees only compact
 one-line descriptions, not internal system prompts or agent-loop instructions.
+Optional stateless packages can also stay physically on disk and be loaded
+asynchronously into bounded warm workers after the router selects them.
 
 See [REPORT.md](REPORT.md) for the full comparison against Pi and OpenCode.
 
@@ -16,9 +18,11 @@ See [REPORT.md](REPORT.md) for the full comparison against Pi and OpenCode.
 
 ```text
 user message
-   -> MoAH builds a compact candidate list from Pi's registered tools
+   -> MoAH builds a compact candidate list from native tools plus
+      indexed streamable package metadata
    -> an API model returns a JSON list of tool names
    -> Pi activates base tools + selected tools
+   -> selected streamable packages start warming asynchronously
    -> the main agent streams its answer normally
 ```
 
@@ -68,13 +72,48 @@ router model. Inside Pi, use `/login` and `/model` as usual for the main agent.
     "maxTools": 6,
     "baseTools": ["read", "bash", "powershell", "edit", "write"]
   },
+  "streaming": {
+    "enabled": true,
+    "prefetch": true,
+    "cold": false,
+    "hotPreload": 0,
+    "maxProcesses": 2,
+    "residentBudgetMb": 512,
+    "idleTtlMs": 120000,
+    "loadTimeoutMs": 30000,
+    "callTimeoutMs": 120000,
+    "estimatedRssMb": 64
+  },
   "packages": []
 }
 ```
 
 `baseTools` are always active when Pi exposes them. Optional tools are
-discovered from Pi's `getAllTools()`, so a user-installed native Pi package can
-be routed the same way once Pi loads it.
+discovered from Pi's `getAllTools()` and from indexed streamable package
+metadata. A user-installed package can therefore be routed even when its
+implementation is still on disk.
+
+Streamable packages must opt in explicitly. For example:
+
+```json
+{
+  "packages": [
+    {
+      "id": "my-stateless-tool",
+      "entry": "extensions/my-stateless-tool.ts",
+      "mode": "stream",
+      "stateless": true,
+      "workerSdk": "lazy"
+    }
+  ]
+}
+```
+
+Streaming hosts one stateless package per child process. Killing that worker is
+the physical unload boundary. Packages that use lifecycle hooks, commands,
+custom rendering, stateful Pi APIs, or a directory package root stay native.
+Set `streaming.cold: true` to disable popularity preload and speculative
+prefetch for controlled cold-path tests; demand loading still works.
 
 ## Default tools
 
@@ -151,4 +190,5 @@ moah dense
 ```
 
 `moah dense` starts original Pi with every available package loaded natively;
-MoAH routing is not active in that mode.
+MoAH routing is not active in that mode. It remains the control condition for
+streaming benchmarks.

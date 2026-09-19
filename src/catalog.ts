@@ -1,10 +1,60 @@
-import { readFile, stat, realpath } from "node:fs/promises";
+import { readFile, readdir, stat, realpath } from "node:fs/promises";
+import { createReadStream } from "node:fs";
 import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
 import { resolve, dirname, join, relative, isAbsolute, sep } from "node:path";
 import { stateDir, writeJson } from "./config.js";
-import type { Config, IndexedPackage, PackageSpec } from "./types.js";
+import type { Config, IndexedPackage, PackageSpec, StreamingClass, ToolMetadata } from "./types.js";
 import { PI_VERSION, baselinePackageSpecs, sha256, trustedManifestMatch } from "./corpus.js";
+import { PackageWorkerClient } from "./streaming/package-worker-client.js";
+
+export async function sourceFingerprint(root: string): Promise<string> {
+  const hash = createHash("sha256");
+
+  async function visit(dir: string): Promise<void> {
+    const entries = (await readdir(dir, { withFileTypes: true })).sort((a, b) =>
+      a.name.localeCompare(b.name),
+    );
+    for (const entry of entries) {
+      if (["node_modules", ".git", ".moah"].includes(entry.name)) continue;
+      const path = join(dir, entry.name);
+      if (entry.isSymbolicLink()) throw new Error(`Symlinks are not supported in streamed package sources: ${path}`);
+      if (entry.isDirectory()) {
+        await visit(path);
+      } else if (entry.isFile()) {
+        hash.update(relative(root, path).split(sep).join("/"));
+        hash.update("\0");
+        for await (const chunk of createReadStream(path)) hash.update(chunk);
+      }
+    }
+  }
+
+  await visit(root);
+  return hash.digest("hex");
+}
+
+function streamingClassFromSource(source: string): { contextAdapter: boolean; forbidden?: string } {
+  const forbiddenPatterns: Array<[RegExp, string]> = [
+    [/\bctx\.ui\b/, "interactive ctx.ui"],
+    [/\bctx\.sessionManager\b/, "ctx.sessionManager"],
+    [/\bctx\.model\b/, "ctx.model"],
+    [/\bctx\.modelRegistry\b/, "ctx.modelRegistry"],
+    [/\bctx\.events\b/, "ctx.events"],
+    [/\bctx\.abort\s*\(/, "ctx.abort"],
+    [/\bctx\.shutdown\s*\(/, "ctx.shutdown"],
+    [/\bctx\.sendUserMessage\b/, "ctx.sendUserMessage"],
+    [/\bpi\.on\s*\(/, "lifecycle hooks"],
+    [/\bpi\.registerCommand\s*\(/, "commands"],
+    [/\bpi\.sendUserMessage\s*\(/, "pi.sendUserMessage"],
+    [/\bpi\.exec\s*\(/, "pi.exec"],
+  ];
+  for (const [pattern, label] of forbiddenPatterns) {
+    if (pattern.test(source)) return { contextAdapter: false, forbidden: label };
+  }
+
+  const contextAdapter = /\bctx\.(cwd|hasUI|signal)\b/.test(source);
+  return { contextAdapter };
+}
 
 export async function resolvePackage(spec: PackageSpec, cwd: string): Promise<{ entry: string; root: string }> {
   let root: string;
@@ -72,6 +122,7 @@ async function lockHash(cwd: string): Promise<string> {
 export async function buildCatalog(config: Config, cwd: string): Promise<IndexedPackage[]> {
   const packages: IndexedPackage[] = [];
   const specs = await effectivePackageSpecs(config);
+  const names = new Set<string>();
 
   for (const spec of specs) {
     const base: IndexedPackage = {
@@ -80,14 +131,16 @@ export async function buildCatalog(config: Config, cwd: string): Promise<Indexed
       entry: "",
       root: "",
       nativeSource: "",
-      mode: "unavailable",
+      mode: "native",
       provenance: spec.provenance ?? "community-installed",
       autoAcquire: false,
       nativeResident: !!spec.nativeResident,
       routerEligible: spec.routerEligible !== false,
+      tools: [],
+      workerSdk: spec.workerSdk ?? "lazy",
       sourceHash: spec.sourceHash,
       sourceCommit: spec.sourceCommit,
-      reason: "Unavailable",
+      reason: "Native Pi lifecycle preserved",
     };
 
     let source: { entry: string; root: string };
@@ -95,6 +148,7 @@ export async function buildCatalog(config: Config, cwd: string): Promise<Indexed
       source = await resolvePackage(spec, cwd);
     } catch (error) {
       base.reason = error instanceof Error ? error.message : String(error);
+      base.mode = "unavailable";
       packages.push(base);
       continue;
     }
@@ -110,11 +164,13 @@ export async function buildCatalog(config: Config, cwd: string): Promise<Indexed
     const trusted = await trustedManifestMatch(spec);
     if (spec.sourceHash && spec.sourceHash !== await sha256(source.entry)) {
       base.reason = "Source hash does not match the configured immutable record";
+      base.mode = "unavailable";
       packages.push(base);
       continue;
     }
     if (spec.provenance === "pi-official-example" && !trusted) {
       base.reason = "First-party provenance was not verified against MoAH's bundled manifest";
+      base.mode = "unavailable";
       packages.push(base);
       continue;
     }
@@ -128,25 +184,101 @@ export async function buildCatalog(config: Config, cwd: string): Promise<Indexed
         createRequire(import.meta.url).resolve(requiredExternalDependency[spec.corpusId]);
       } catch {
         base.reason = `Missing external dependency ${requiredExternalDependency[spec.corpusId]}`;
+        base.mode = "unavailable";
         packages.push(base);
         continue;
       }
     }
 
-    packages.push({
+    const resolved = {
       ...base,
       entry: source.entry,
       root: source.root,
       nativeSource,
-      mode: "native",
-      reason: spec.nativeResident
-        ? "Native resident at startup; router can enable its tools in-session"
-        : "On-disk official/user capability; Pi can load it manually or as configured",
-    });
+    };
+
+    const streamEligible = spec.mode !== "native" && (spec.stateless === true || spec.mode === "stream");
+    if (!streamEligible) {
+      packages.push({
+        ...resolved,
+        reason: spec.nativeResident
+          ? "Native resident at startup; router can enable its tools in-session"
+          : "On-disk official/user capability; Pi can load it manually or as configured",
+      });
+      continue;
+    }
+
+    const sourceText = await readFile(source.entry, "utf8");
+    const staticClassification = streamingClassFromSource(sourceText);
+    if (staticClassification.forbidden) {
+      packages.push({
+        ...resolved,
+        mode: "native",
+        tools: [],
+        streamingClass: "NATIVE_REQUIRED",
+        reason: `Native fallback after static scan: ${staticClassification.forbidden}`,
+      });
+      continue;
+    }
+
+    const entryStat = await stat(source.entry).catch(() => undefined);
+    if (!entryStat?.isFile()) {
+      packages.push({
+        ...resolved,
+        streamingClass: "NATIVE_REQUIRED",
+        reason: "Streaming requires a single file entry; native Pi lifecycle preserved",
+      });
+      continue;
+    }
+
+    const worker = new PackageWorkerClient(cwd);
+    try {
+      const result = await worker.request(
+        "load",
+        { entry: source.entry, lazySdk: spec.workerSdk !== "full" },
+        config.streaming.loadTimeoutMs,
+      );
+      const tools = result.tools as ToolMetadata[];
+      if (tools.some(tool => names.has(tool.name) || tool.name.startsWith("moah_"))) {
+        throw new Error("Tool name collision; resolve through native Pi diagnostics");
+      }
+
+      const fingerprint = await sourceFingerprint(source.root);
+      for (const tool of tools) names.add(tool.name);
+      const customRendering = tools.some(tool => tool.customRendering);
+      const streamingClass: StreamingClass = staticClassification.contextAdapter
+        ? "CONTEXT_ADAPTER_STREAMABLE"
+        : customRendering
+          ? "EXECUTION_STREAMABLE_WITH_GENERIC_RENDERING"
+          : "EXACT_STREAMABLE";
+      packages.push({
+        ...resolved,
+        mode: "stream",
+        tools,
+        workerSdk: spec.workerSdk ?? "lazy",
+        sourceFingerprint: fingerprint,
+        streamingClass,
+        reason: streamingClass === "CONTEXT_ADAPTER_STREAMABLE"
+          ? "Stateless contract declared; allowlisted context adapter and isolated worker probe passed"
+          : streamingClass === "EXECUTION_STREAMABLE_WITH_GENERIC_RENDERING"
+            ? "Execution isolated; custom rendering will use generic fallback in the parent proxy"
+            : "Stateless contract declared; isolated worker probe passed",
+      });
+    } catch (error) {
+      packages.push({
+        ...resolved,
+        mode: "native",
+        tools: [],
+        streamingClass: "NATIVE_REQUIRED",
+        reason: `Native fallback after worker probe: ${error instanceof Error ? error.message : String(error)}`,
+      });
+    } finally {
+      await worker.close();
+    }
   }
 
   await writeJson(join(stateDir(cwd), "catalog.json"), {
-    schema: 2,
+    schema: 3,
     piVersion: PI_VERSION,
     specs,
     lockHash: await lockHash(cwd),
@@ -161,8 +293,13 @@ export async function readCatalog(config: Config, cwd: string): Promise<IndexedP
   const raw = JSON.parse(await readFile(join(stateDir(cwd), "catalog.json"), "utf8").catch(() => {
     throw new Error("Catalog missing. Run: moah index");
   }));
-  if (raw.schema !== 2 || raw.piVersion !== PI_VERSION || JSON.stringify(raw.specs) !== JSON.stringify(specs) || raw.lockHash !== await lockHash(cwd)) {
+  if (raw.schema !== 3 || raw.piVersion !== PI_VERSION || JSON.stringify(raw.specs) !== JSON.stringify(specs) || raw.lockHash !== await lockHash(cwd)) {
     throw new Error("Catalog/configuration/dependencies changed. Run: moah index");
+  }
+  for (const pkg of raw.packages as IndexedPackage[]) {
+    if (pkg.mode === "stream" && pkg.sourceFingerprint && await sourceFingerprint(pkg.root) !== pkg.sourceFingerprint) {
+      throw new Error(`Package ${pkg.id} changed. Rebuild the catalog.`);
+    }
   }
   return raw.packages as IndexedPackage[];
 }
@@ -171,7 +308,7 @@ export function nativeArguments(catalog: IndexedPackage[], dense = false): strin
   const args: string[] = [];
   for (const pkg of catalog) {
     if (pkg.mode === "unavailable") continue;
-    if (dense || pkg.nativeResident) args.push("-e", pkg.nativeSource);
+    if (dense || (pkg.mode === "native" && pkg.nativeResident)) args.push("-e", pkg.nativeSource);
   }
   return args;
 }

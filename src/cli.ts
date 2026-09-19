@@ -14,6 +14,11 @@ import { runSuite } from "./runner.js";
 import { ensureLangSmithDataset, runLangSmithExperiment } from "./langsmith-eval.js";
 import type { Config } from "./types.js";
 
+async function piMain(args: string[], options?: Record<string, unknown>): Promise<void> {
+  const { main } = await import("./vendor/pi-runtime/index.js");
+  return main(args, options as any);
+}
+
 function repoProfilesDir(): string {
   const candidates = [
     new URL("../benchmarks/profiles/", import.meta.url),
@@ -58,8 +63,7 @@ model and login remain managed by Pi.`);
 
   if (["install", "remove", "update", "list", "config"].includes(command)) {
     if (["install", "remove"].includes(command) && rest.length !== 1) throw new Error(`Usage: moah ${command} <Pi source>`);
-    const pi = await import("@earendil-works/pi-coding-agent");
-    await measurePreparation(cwd, `pi-${command}`, () => pi.main([command, ...rest, ...(["install", "remove", "config"].includes(command) ? ["-l"] : [])]));
+    await measurePreparation(cwd, `pi-${command}`, () => piMain([command, ...rest, ...(["install", "remove", "config"].includes(command) ? ["-l"] : [])]));
     return;
   }
 
@@ -157,16 +161,15 @@ model and login remain managed by Pi.`);
       throw new Error(`Unknown baseline mode: ${profile.mode}`);
     }
 
-    const pi = await import("@earendil-works/pi-coding-agent");
     console.warn(`MoAH baseline: ${profile.name} (${profile.mode})`);
 
     if (profile.mode === "pi-default") {
-      await pi.main(piArgs);
+      await piMain(piArgs);
       return;
     }
     const catalog = await loadCatalog();
     if (profile.mode === "pi-full") {
-      await pi.main([...nativeArguments(catalog, true), ...piArgs]);
+      await piMain([...nativeArguments(catalog, true), ...piArgs]);
       return;
     }
 
@@ -183,9 +186,9 @@ model and login remain managed by Pi.`);
         mode: routerMode as Config["router"]["mode"],
       },
     };
-    await pi.main(
+    await piMain(
       [...nativeArguments(catalog), ...piArgs],
-      { extensionFactories: [{ name: "moah", factory: createMoahExtension({ cwd, config: baselineConfig }) }] },
+      { extensionFactories: [{ name: "moah", factory: createMoahExtension({ cwd, config: baselineConfig, catalog }) }] },
     );
     return;
   }
@@ -201,20 +204,18 @@ model and login remain managed by Pi.`);
 
   if (command === "dense") {
     const catalog = await loadCatalog();
-    const pi = await import("@earendil-works/pi-coding-agent");
-    await pi.main([...nativeArguments(catalog, true), ...rest]);
+    await piMain([...nativeArguments(catalog, true), ...rest]);
     return;
   }
 
   if (command === "pi") {
     const catalog = await loadCatalog();
-    const pi = await import("@earendil-works/pi-coding-agent");
     for (const pkg of catalog.filter(pkg => pkg.mode === "unavailable")) {
       console.warn(`MoAH ${pkg.id}: ${pkg.reason}`);
     }
-    await pi.main(
+    await piMain(
       [...nativeArguments(catalog), ...rest],
-      { extensionFactories: [{ name: "moah", factory: createMoahExtension({ cwd, config }) }] },
+      { extensionFactories: [{ name: "moah", factory: createMoahExtension({ cwd, config, catalog }) }] },
     );
     return;
   }

@@ -1,50 +1,123 @@
 import { join } from "node:path";
 import { createHash, randomUUID } from "node:crypto";
 import { Type } from "typebox";
-import type { ExtensionAPI, ExtensionContext, ExtensionFactory } from "@earendil-works/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext, ExtensionFactory } from "./extensions/types.js";
 import { readConfig, stateDir } from "./config.js";
+import { buildCatalog, readCatalog } from "./catalog.js";
 import { ApiToolRouter } from "./router.js";
 import { createTrace } from "./trace.js";
 import { SELECT, isControl, toCandidate, validateSelection } from "./capabilities.js";
 import { catalogForRouter, readOfficialCatalog } from "./official-catalog.js";
 import { MoahTracer, usageToMetadata } from "./observability.js";
-import type { Config, RouteResult, Trace } from "./types.js";
+import { PackageCache } from "./streaming/package-cache.js";
+import type { Config, IndexedPackage, RouteResult, Trace, ToolMetadata } from "./types.js";
+
+function textContent(content: unknown): string {
+  if (typeof content === "string") return content;
+  if (!Array.isArray(content)) return "";
+  return content
+    .filter((part: any) => part?.type === "text")
+    .map((part: any) => part.text)
+    .join("\n");
+}
 
 export function createMoahExtension(options: {
   cwd?: string;
   config?: Config;
+  catalog?: IndexedPackage[];
   router?: ApiToolRouter;
   trace?: Trace;
 } = {}): ExtensionFactory {
   return async (pi: ExtensionAPI) => {
     const cwd = options.cwd ?? process.cwd();
     const config = options.config ?? await readConfig(join(cwd, "moah.config.json"));
+    const catalog = options.catalog ?? await (async () => {
+      try {
+        return await readCatalog(config, cwd);
+      } catch (error) {
+        if (error instanceof Error && error.message.includes("Catalog missing")) {
+          return await buildCatalog(config, cwd);
+        }
+        throw error;
+      }
+    })();
     const officialCatalog = await readOfficialCatalog();
     const officialCandidates = catalogForRouter(officialCatalog, config.router.baseTools);
     const officialDescriptions = new Map(officialCandidates.map(candidate => [candidate.name, candidate.description]));
+    const streamPackages = catalog.filter(pkg => pkg.mode === "stream");
+    const streamTools = new Map<string, { tool: ToolMetadata; packageId: string }>();
+    for (const pkg of streamPackages) {
+      for (const tool of pkg.tools) streamTools.set(tool.name, { tool, packageId: pkg.id });
+    }
     const trace = options.trace ?? createTrace(join(stateDir(cwd), "traces"));
     let router: ApiToolRouter | undefined;
+    let packageCache: PackageCache | undefined;
     let initialized = false;
     let lastRoute: RouteResult | undefined;
     let tracer: MoahTracer | undefined;
     let activeTurnSpan: ReturnType<MoahTracer["child"]>;
+    const registeredStreamToolNames = new Set<string>();
 
     const allTools = () => pi.getAllTools().filter(tool => !isControl(tool.name));
     const baseNames = () => config.router.baseTools.filter(name => allTools().some(tool => tool.name === name));
     const candidateTools = () => {
-      const available = new Set(allTools().map(tool => tool.name));
       const base = new Set(baseNames());
+      const known = new Map<string, string>();
+      for (const tool of allTools()) {
+        known.set(tool.name, officialDescriptions.get(tool.name) ?? tool.description);
+      }
+      for (const pkg of streamPackages) {
+        for (const tool of pkg.tools) {
+          if (!known.has(tool.name)) known.set(tool.name, tool.description);
+        }
+      }
       const catalogCandidates = officialCandidates
-        .filter(candidate => available.has(candidate.name))
+        .filter(candidate => known.has(candidate.name))
         .map(candidate => ({ name: candidate.name, description: candidate.description }));
       const catalogNames = new Set(catalogCandidates.map(candidate => candidate.name));
-      const extras = allTools()
-        .filter(tool => !base.has(tool.name) && !catalogNames.has(tool.name))
-        .map(tool => toCandidate({
-          name: tool.name,
-          description: officialDescriptions.get(tool.name) ?? tool.description,
-        }, 180));
+      const extras = [...known]
+        .filter(([name]) => !base.has(name) && !catalogNames.has(name))
+        .map(([name, description]) => toCandidate({ name, description }, 180));
       return [...catalogCandidates, ...extras];
+    };
+    const packageIdsForTools = (toolNames: string[]) => {
+      const ids = new Set<string>();
+      for (const name of toolNames) {
+        const match = streamTools.get(name);
+        if (match) ids.add(match.packageId);
+      }
+      return [...ids];
+    };
+    const registerStreamProxies = () => {
+      const existing = new Set(pi.getAllTools().map(tool => tool.name));
+      for (const pkg of streamPackages) {
+        for (const metadata of pkg.tools) {
+          if (registeredStreamToolNames.has(metadata.name)) continue;
+          if (existing.has(metadata.name)) {
+            throw new Error(`Tool name conflict: ${metadata.name}. Resolve the conflicting names in Pi configuration.`);
+          }
+          pi.registerTool({
+            name: metadata.name,
+            label: metadata.label,
+            description: metadata.description,
+            parameters: metadata.parameters as any,
+            ...(metadata.promptSnippet !== undefined ? { promptSnippet: metadata.promptSnippet } : {}),
+            ...(metadata.promptGuidelines !== undefined ? { promptGuidelines: metadata.promptGuidelines } : {}),
+            ...(metadata.executionMode !== undefined ? { executionMode: metadata.executionMode } : {}),
+            ...(metadata.constrainedSampling !== undefined ? { constrainedSampling: metadata.constrainedSampling as any } : {}),
+            async execute(id: string, args: any, signal: AbortSignal | undefined, onUpdate: any) {
+              if (!packageCache) throw new Error("MoAH streaming has not initialized");
+              const result: any = await packageCache.execute(metadata.name, pkg.id, args, id, signal, onUpdate);
+              if ((result as any)?.isError) {
+                throw new Error(textContent((result as any).content) || `Tool ${metadata.name} failed`);
+              }
+              return result;
+            },
+          });
+          existing.add(metadata.name);
+          registeredStreamToolNames.add(metadata.name);
+        }
+      }
     };
     const hasControl = () => pi.getAllTools().some(tool => isControl(tool.name));
 
@@ -59,9 +132,12 @@ export function createMoahExtension(options: {
     };
 
     const status = (ctx: ExtensionContext) => {
+      const snapshot = packageCache?.snapshot();
+      const resident = snapshot?.entries.length ?? 0;
+      const loading = snapshot?.loading.length ?? 0;
       ctx.ui.setStatus(
         "moah",
-        `router=${config.router.enabled ? config.router.mode : "off"} · ${pi.getActiveTools().filter(name => !isControl(name)).length} tools`,
+        `router=${config.router.enabled ? config.router.mode : "off"} · ${pi.getActiveTools().filter(name => !isControl(name)).length} tools · ${resident} resident/${loading} loading`,
       );
     };
 
@@ -72,9 +148,11 @@ export function createMoahExtension(options: {
       parameters: Type.Object({
         tools: Type.Array(Type.String({ minLength: 1 }), { maxItems: config.router.maxTools }),
       }, { additionalProperties: false }),
-      async execute(_id, { tools }: { tools: string[] }) {
+      async execute(_id: string, { tools }: { tools: string[] }) {
         if (!initialized) throw new Error("MoAH has not initialized");
         const selected = validateSelection(tools, candidateTools(), config.router.maxTools);
+        packageCache?.beginTurn(packageIdsForTools(selected));
+        void packageCache?.prefetch(packageIdsForTools(selected), "manual-select");
         applyOptional(selected);
         return {
           content: [{ type: "text", text: JSON.stringify({
@@ -102,6 +180,8 @@ export function createMoahExtension(options: {
           .map(name => name.trim())
           .filter(Boolean);
         applyOptional(oracleTools);
+        packageCache?.beginTurn(packageIdsForTools(oracleTools));
+        void packageCache?.prefetch(packageIdsForTools(oracleTools), "oracle");
         lastRoute = { selected: oracleTools, ranked: [], elapsedMs: 0 };
         trace("oracle", { selected: oracleTools });
         await tracer?.endChild(activeTurnSpan, {
@@ -146,6 +226,9 @@ export function createMoahExtension(options: {
 
         if (config.router.mode === "auto") {
           applyOptional(route.selected);
+          const selectedPackages = packageIdsForTools(route.selected);
+          packageCache?.beginTurn(selectedPackages);
+          void packageCache?.prefetch(selectedPackages, "router-auto");
           status(ctx);
           return { action: "continue" as const };
         }
@@ -186,6 +269,10 @@ export function createMoahExtension(options: {
         sessionId,
       });
 
+      if (packageCache) await packageCache.close();
+      packageCache = new PackageCache(streamPackages, cwd, config.streaming, trace);
+      registerStreamProxies();
+
       if (config.router.enabled) {
         applyOptional([]);
       } else {
@@ -193,6 +280,9 @@ export function createMoahExtension(options: {
           ...pi.getActiveTools().filter(name => !isControl(name)),
           ...(hasControl() ? [SELECT] : []),
         ]);
+      }
+      if (!config.streaming.cold && config.streaming.hotPreload > 0) {
+        void packageCache.preloadHot(config.streaming.hotPreload);
       }
 
       trace("session_start", {
@@ -207,6 +297,8 @@ export function createMoahExtension(options: {
         },
         baseTools: baseNames(),
         candidates: candidateTools().map(tool => tool.name),
+        streamPackages: streamPackages.map(pkg => pkg.id),
+        streaming: config.streaming,
       });
       status(ctx);
     });
@@ -228,6 +320,8 @@ export function createMoahExtension(options: {
     pi.on("session_shutdown", async () => {
       if (!initialized) return;
       initialized = false;
+      await packageCache?.close();
+      packageCache = undefined;
       trace("session_shutdown", {});
       await tracer?.end({});
       await tracer?.flush();
@@ -235,7 +329,7 @@ export function createMoahExtension(options: {
 
     pi.registerCommand("moah", {
       description: "MoAH status; dense exposes all optional tools, sparse releases them",
-      handler: async (args, ctx) => {
+      handler: async (args: string, ctx: ExtensionContext) => {
         if (!initialized) return;
         if (args.trim() === "dense") applyOptional(candidateTools().map(tool => tool.name));
         else if (args.trim() === "sparse") applyOptional([]);
@@ -249,6 +343,7 @@ export function createMoahExtension(options: {
           active: pi.getActiveTools().filter(name => !isControl(name)),
           candidates: candidateTools().map(tool => tool.name),
           lastRoute,
+          streaming: packageCache?.snapshot(),
         }, null, 2), "info");
       },
     });

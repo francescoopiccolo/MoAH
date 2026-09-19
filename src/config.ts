@@ -15,6 +15,18 @@ export function defaultConfig(): Config {
       maxTools: 6,
       baseTools: ["read", "bash", "powershell", "edit", "write"],
     },
+    streaming: {
+      enabled: true,
+      prefetch: true,
+      cold: false,
+      hotPreload: 0,
+      maxProcesses: 2,
+      residentBudgetMb: 512,
+      idleTtlMs: 120000,
+      loadTimeoutMs: 30000,
+      callTimeoutMs: 120000,
+      estimatedRssMb: 64,
+    },
     packages: [],
   };
 }
@@ -28,6 +40,7 @@ export async function readConfig(file = resolve("moah.config.json")): Promise<Co
   const config: Config = {
     baseline: { enabled: true, ...(c.baseline ?? {}) },
     router: { ...defaultConfig().router, ...(c.router ?? {}) },
+    streaming: { ...defaultConfig().streaming, ...(c.streaming ?? {}) },
     packages: c.packages ?? [],
   };
 
@@ -45,6 +58,24 @@ export async function readConfig(file = resolve("moah.config.json")): Promise<Co
     throw new Error("Invalid router configuration");
   }
 
+  const s = config.streaming;
+  const positive = (v: unknown) => typeof v === "number" && Number.isFinite(v) && v > 0;
+  const nonNegativeInteger = (v: unknown) => typeof v === "number" && Number.isInteger(v) && v >= 0;
+  if (
+    typeof s.enabled !== "boolean" ||
+    typeof s.prefetch !== "boolean" ||
+    typeof s.cold !== "boolean" ||
+    !nonNegativeInteger(s.hotPreload) ||
+    !Number.isInteger(s.maxProcesses) || s.maxProcesses < 1 ||
+    !positive(s.residentBudgetMb) ||
+    !positive(s.idleTtlMs) ||
+    !positive(s.loadTimeoutMs) ||
+    !positive(s.callTimeoutMs) ||
+    !positive(s.estimatedRssMb)
+  ) {
+    throw new Error("Invalid streaming configuration");
+  }
+
   const ids = new Set<string>();
   for (const p of config.packages) {
     if (!p || typeof p.id !== "string" || !/^[a-zA-Z0-9_-]+$/.test(p.id) || ids.has(p.id) ||
@@ -59,6 +90,18 @@ export async function readConfig(file = resolve("moah.config.json")): Promise<Co
     }
     if (["nativeResident", "routerEligible"].some(key => (p as any)[key] !== undefined && typeof (p as any)[key] !== "boolean")) {
       throw new Error("Package flags must be booleans");
+    }
+    if (p.mode !== undefined && !["auto", "native", "stream"].includes(p.mode)) {
+      throw new Error("package.mode must be auto, native, or stream");
+    }
+    if (p.stateless !== undefined && typeof p.stateless !== "boolean") {
+      throw new Error("package.stateless must be a boolean");
+    }
+    if (p.workerSdk !== undefined && !["full", "lazy"].includes(p.workerSdk)) {
+      throw new Error("package.workerSdk must be full or lazy");
+    }
+    if (p.mode === "stream" && p.stateless === false) {
+      throw new Error("package.mode=stream requires package.stateless=true");
     }
     ids.add(p.id);
   }
