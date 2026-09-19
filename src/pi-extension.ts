@@ -252,6 +252,12 @@ export function createMoahExtension(options: {
       }
     });
 
+    if (process.env.MOAH_CAPTURE_FIRST_REQUEST) {
+      pi.on("before_provider_request", event => {
+        trace("provider_request", { payload: (event as any).payload });
+      });
+    }
+
     pi.on("session_start", async (_event, ctx) => {
       router = options.router ?? new ApiToolRouter(config.router);
       lastRoute = undefined;

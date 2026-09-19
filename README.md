@@ -1,6 +1,7 @@
 # MoAH
 
-MoAH is **Pi Agent plus an automatic tool router**.
+MoAH is a **standalone coding-agent harness derived from Pi**, with an
+automatic API tool router and SSD-backed sparse package residency.
 
 You write the prompt. MoAH decides which optional tools the next phase needs,
 activates them, and lets Pi stream the answer. The developer does not need to
@@ -12,7 +13,8 @@ one-line descriptions, not internal system prompts or agent-loop instructions.
 Optional stateless packages can also stay physically on disk and be loaded
 asynchronously into bounded warm workers after the router selects them.
 
-See [REPORT.md](REPORT.md) for the full comparison against Pi and OpenCode.
+See [REPORT-PREOPTIMIZATION.md](REPORT-PREOPTIMIZATION.md) for the frozen
+pre-optimization benchmark and the full architectural explanation.
 
 ## Flow
 
@@ -142,30 +144,51 @@ rg
 reload_runtime
 ```
 
-## Current comparison
+## Validated efficiency baseline
 
-We ran 240 end-to-end benchmark runs: 6 harness profiles, 8 task types, and 5
-repetitions per combination.
+This is the frozen pre-optimization baseline for MoAH v1.
 
-MoAH is slightly slower than plain Pi, but keeps similar cost and remains far
-cheaper than OpenCode, which puts the full tool set into context. In automatic
-mode the router selects tools by itself, so the developer does not have to
-understand which tools should be added to the harness.
-
-| profile | latency | cost | router tokens |
+| system | fresh tokens vs Pi | processed tokens vs Pi | E2E median |
 |---|---:|---:|---:|
-| pi-default | 8.18s | $0.00010 | 0 |
-| pi-full | 8.61s | $0.00020 | 0 |
-| moah-auto | 10.60s | $0.00021 | 262.6 |
-| moah-suggest | 11.90s | $0.00020 | 262.9 |
-| moah-oracle | 8.95s | $0.00012 | 0 |
-| opencode | 10.28s | $0.00183 | 0 |
+| Pi Vanilla | 1.00x | 1.00x | ~4.9 s |
+| MoAH Streamed Prefetch | 1.44x | 1.30x | ~6.1 s |
+| OpenCode | 3.64x | 6.96x | ~11.2 s |
 
-If manual tool selection time is included in the comparison, MoAH is not merely
-close to Pi: it can be orders of magnitude faster from prompt to a useful
-working configuration.
+MoAH automatically:
 
-See [REPORT.md](REPORT.md) for details and limits.
+1. reads the user prompt;
+2. asks a small API router to select only the useful optional tools;
+3. activates those schemas;
+4. warms selected streamable packages asynchronously;
+5. leaves the main model a compact context instead of every known tool.
+
+Compared with OpenCode on the tested deterministic tasks, MoAH saved:
+
+```text
+~60% fresh tokens
+~81% processed tokens
+```
+
+while adding over Pi:
+
+```text
+~44% fresh-token overhead
+~30% processed-token overhead
+```
+
+The largest measured first-request difference versus OpenCode came from:
+
+```text
+~62% tool schemas
+~38% system/harness instructions
+```
+
+The important advantage is automation plus context efficiency: the router does
+the manual tool-selection work for the developer and MoAH does not put every
+available tool into the main-model context.
+
+See [REPORT-PREOPTIMIZATION.md](REPORT-PREOPTIMIZATION.md) for tasks,
+limitations, next phases, and the full methodology.
 
 ## Controls in Pi
 
