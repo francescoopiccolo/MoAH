@@ -190,6 +190,45 @@ available tool into the main-model context.
 See [REPORT-PREOPTIMIZATION.md](REPORT-PREOPTIMIZATION.md) for tasks,
 limitations, next phases, and the full methodology.
 
+## Clean SSD-backed streaming baseline
+
+The experimental streamed-artifact path is now runtime-independent and does
+not load the full upstream Pi coding-agent runtime.
+
+Clean real `rg` workload, `openrouter/openai/gpt-4o-mini`:
+
+```text
+Demand:
+  load time:        958 ms
+  foreground wait:  961 ms
+
+Prefetch:
+  load time:        758 ms median
+  foreground wait:  1.6 ms median
+  hidden fraction:  99.8% median
+```
+
+Clean prebuilt artifacts:
+
+```text
+hello              ~1031 ms import / ~119 MB worker RSS
+structured-output  ~1115 ms import / ~117 MB worker RSS
+rg                 ~1041 ms import / ~119 MB worker RSS
+```
+
+Process-tree RAM comparison:
+
+```text
+Native    startup/min 92.0 MB / peak 134.9 MB
+Demand    startup/min 67.0 MB / peak 163.2 MB
+Prefetch  startup/min 65.4 MB / peak 178.9 MB
+```
+
+Streaming lowers startup/idle memory but currently adds peak memory during
+cold worker use. Warm reuse is near-native.
+
+See [STREAMING-BASELINE.md](STREAMING-BASELINE.md).
+
 ## Controls in Pi
 
 - `/moah` — status, active tools and last router decision.

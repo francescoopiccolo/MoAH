@@ -21,6 +21,7 @@ interface PendingRequest {
 export class PackageWorkerClient {
   readonly child: ChildProcess;
   rss = 0;
+  readonly stages: Array<{ stage: string; ts: number; rss?: number }> = [];
 
   private pending = new Map<string, PendingRequest>();
   private closed = false;
@@ -39,7 +40,9 @@ export class PackageWorkerClient {
       windowsHide: true,
     };
 
+    this.stages.push({ stage: "parent_before_spawn", ts: Date.now(), rss: process.memoryUsage().rss });
     this.child = fork(fileURLToPath(useCompiled ? compiled : source), [], options);
+    this.stages.push({ stage: "parent_after_spawn", ts: Date.now(), rss: process.memoryUsage().rss });
     this.exited = new Promise(resolve => {
       this.child.once("exit", () => resolve());
       this.child.once("error", () => resolve());
@@ -47,6 +50,9 @@ export class PackageWorkerClient {
 
     this.child.on("message", (message: any) => {
       if (typeof message?.rss === "number") this.rss = message.rss;
+      if (typeof message?.stage === "string") {
+        this.stages.push({ stage: message.stage, ts: message.ts, rss: message.rss });
+      }
       const pending = this.pending.get(message?.id);
       if (!pending) return;
 

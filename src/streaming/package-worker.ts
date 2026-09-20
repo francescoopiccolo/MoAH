@@ -29,6 +29,15 @@ const send = (message: unknown) => {
   if (process.connected) process.send?.(message);
 };
 
+const stageTrace = process.env.MOAH_WORKER_STAGE_TRACE === "1";
+const stage = (name: string) => {
+  if (!stageTrace) return;
+  send({ stage: name, ts: Date.now(), rss: process.memoryUsage().rss });
+};
+
+if (stageTrace) stage("worker_entry");
+if (stageTrace) stage("shims_initialized");
+
 const failAccess = (name: string): never => {
   unsupported.add(name);
   throw new Error(`Unsupported in streamed tool process: ${name}. Load this extension natively in Pi instead.`);
@@ -93,7 +102,13 @@ process.on("message", async (message: any) => {
   const { id, op } = message ?? {};
   try {
     if (op === "load") {
+      stage("load_requested");
       if (loaded) throw new Error("A worker hosts exactly one package");
+      if (/node_modules[\\/]@earendil-works[\\/]pi-coding-agent[\\/]dist/.test(message.entry)) {
+        throw new Error(
+          "FORBIDDEN UPSTREAM RUNTIME IMPORT: @earendil-works/pi-coding-agent. Expected MoAH local compatibility shim.",
+        );
+      }
 
       const workerAliases = { ...alias };
       if (message.lazySdk) {
@@ -101,18 +116,25 @@ process.on("message", async (message: any) => {
         // intentionally no automatic fallback to the full upstream Pi SDK.
       }
 
+      stage("loader_initializing");
       const jiti = createJiti(import.meta.url, {
         alias: workerAliases,
         moduleCache: false,
         fsCache: false,
       });
+      stage("loader_initialized");
+      stage("artifact_import_start");
       const factory = await jiti.import(message.entry, { default: true }) as any;
+      stage("artifact_import_complete");
       if (typeof factory !== "function") throw new Error("Pi extension must export a default factory");
       await factory(api);
+      stage("tool_registration_complete");
       if (unsupported.size) throw new Error(`Unsupported extension APIs: ${[...unsupported].join(", ")}`);
       if (!tools.size) throw new Error("Extension registered no tools");
       loaded = true;
+      stage("ready_send");
       send({ id, result: { tools: metadata(), rss: process.memoryUsage().rss, pid: process.pid } });
+      stage("ready_sent");
       return;
     }
 

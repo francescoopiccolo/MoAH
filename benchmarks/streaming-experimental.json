@@ -1,0 +1,50 @@
+{
+  "baseline": { "enabled": false },
+  "router": {
+    "enabled": true,
+    "mode": "auto",
+    "baseUrl": "https://openrouter.ai/api/v1",
+    "model": "openai/gpt-4o-mini",
+    "apiKeyEnv": "MOAH_ROUTER_API_KEY",
+    "maxTools": 6,
+    "baseTools": ["read", "bash", "powershell", "edit", "write"]
+  },
+  "streaming": {
+    "enabled": true,
+    "prefetch": true,
+    "cold": false,
+    "hotPreload": 0,
+    "maxProcesses": 1,
+    "residentBudgetMb": 512,
+    "idleTtlMs": 120000,
+    "loadTimeoutMs": 30000,
+    "callTimeoutMs": 30000,
+    "estimatedRssMb": 64
+  },
+  "packages": [
+    {
+      "id": "hello",
+      "entry": "stream-artifacts/hello.bundle.mjs",
+      "mode": "stream",
+      "stateless": true,
+      "workerSdk": "lazy",
+      "nativeResident": false
+    },
+    {
+      "id": "structured-output",
+      "entry": "stream-artifacts/structured-output.bundle.mjs",
+      "mode": "stream",
+      "stateless": true,
+      "workerSdk": "lazy",
+      "nativeResident": false
+    },
+    {
+      "id": "rg",
+      "entry": "stream-artifacts/rg.bundle.mjs",
+      "mode": "stream",
+      "stateless": true,
+      "workerSdk": "lazy",
+      "nativeResident": false
+    }
+  ]
+}
