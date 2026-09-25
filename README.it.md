@@ -30,27 +30,23 @@ messaggio utente
 
 ## Installazione e avvio
 
-Requisiti: Node >= 22.19, npm e un modello principale supportato da Pi.
+Requisiti: Node >= 22.19 e npm. Il runtime derivato da Pi è già incluso in
+MoAH e non deve essere installato o avviato separatamente.
 
 ```sh
-git clone https://github.com/francescoopiccolo/MoAH.git
-cd MoAH
-npm ci
-npm run build
-npm link
+npm install -g moah-ai
 ```
 
 Nel progetto su cui lavorare:
 
 ```sh
 cd /percorso/del/progetto
-moah init
-moah index
-moah pi
+moah
 ```
 
-Impostare `MOAH_ROUTER_API_KEY` per il router API. Il login e il modello
-principale restano gestiti da Pi con `/login` e `/model`.
+Al primo avvio MoAH chiede provider e modello di coding, API key e modello del
+router. Le API key inserite vengono salvate in `~/.moah/credentials.json` e non
+nel progetto. Configurazione, indicizzazione e avvio avvengono automaticamente.
 
 ## Configurazione
 
@@ -125,6 +121,8 @@ Vedi [REPORT.md](REPORT.md) per dettagli e limiti.
 ## Comandi
 
 ```sh
+moah
+moah setup
 moah init
 moah index
 moah route "Cerca sul web"

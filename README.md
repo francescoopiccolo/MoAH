@@ -36,27 +36,44 @@ user message
 
 ## Install and run
 
-Requirements: Node >= 22.19, npm, and a Pi-supported main model.
+Requirements: Node >= 22.19 and npm. The forked Pi runtime is bundled with
+MoAH; Pi does not need to be installed or started separately.
 
 ```sh
-git clone https://github.com/francescoopiccolo/MoAH.git
-cd MoAH
-npm ci
-npm run build
-npm link
+npm install -g moah-ai
 ```
 
-In the project you want to work on:
+Then, from the project you want to work on:
 
 ```sh
 cd /path/to/your/project
-moah init
-moah index
-moah pi
+moah
 ```
 
-`moah init` writes a portable config. Set `MOAH_ROUTER_API_KEY` for the API
-router model. Inside Pi, use `/login` and `/model` as usual for the main agent.
+The first launch asks for the coding provider, coding model, API key, and router
+model. Router choices are:
+
+```text
+Router model
+OpenAI-compatible providers are recommended.
+
+1. Use the same coding model
+2. OpenAI
+3. OpenRouter
+```
+
+`Use the same coding model` is available when the coding provider is OpenAI or
+OpenRouter. Direct Anthropic and Google Gemini models require a separate OpenAI
+or OpenRouter router.
+
+API keys can come from the provider's standard environment variable or be
+entered in a masked prompt. Entered keys are stored in `~/.moah/credentials.json`
+inside the user's home directory and are never written to the project. The file
+uses user-only permissions on platforms that support POSIX file modes. Model
+preferences are stored in `~/.moah/settings.json`.
+
+MoAH then creates `moah.config.json`, indexes the bundled capabilities, and
+starts the agent automatically. Later launches use the same `moah` command.
 
 ## Configuration
 
@@ -240,6 +257,8 @@ See [STREAMING-BASELINE.md](STREAMING-BASELINE.md).
 ## Commands
 
 ```sh
+moah
+moah setup
 moah init
 moah index
 moah route "Search the web"
@@ -250,6 +269,9 @@ moah bench benchmarks/lean-smoke.json
 moah pi
 moah dense
 ```
+
+`moah setup` runs the model and API-key setup again. `init`, `index`, and `pi`
+remain available for manual and automated workflows.
 
 `moah dense` starts original Pi with every available package loaded natively;
 MoAH routing is not active in that mode. It remains the control condition for

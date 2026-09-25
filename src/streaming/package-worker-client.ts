@@ -31,11 +31,13 @@ export class PackageWorkerClient {
     const compiled = new URL("./package-worker.js", import.meta.url);
     const source = new URL("./package-worker.ts", import.meta.url);
     const useCompiled = existsSync(compiled);
-    const tsxLoader = pathToFileURL(createRequire(import.meta.url).resolve("tsx")).href;
+    const execArgv = useCompiled
+      ? []
+      : ["--import", pathToFileURL(createRequire(import.meta.url).resolve("tsx")).href];
     const options: ForkOptions & { windowsHide: boolean } = {
       cwd,
       execPath: process.execPath,
-      execArgv: useCompiled ? [] : ["--import", tsxLoader],
+      execArgv,
       stdio: ["ignore", "ignore", "ignore", "ipc"],
       windowsHide: true,
     };

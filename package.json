@@ -1,8 +1,18 @@
 {
-  "name": "moah-pi",
-  "version": "0.1.0",
-  "private": true,
+  "name": "moah-ai",
+  "version": "0.1.3",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/francescoopiccolo/MoAH.git"
+  },
+  "homepage": "https://github.com/francescoopiccolo/MoAH#readme",
+  "bugs": {
+    "url": "https://github.com/francescoopiccolo/MoAH/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
     "moah": "bin/moah.mjs"
   },
@@ -12,19 +22,41 @@
     "dist/modes/",
     "scripts/measure-tree.ps1",
     "scripts/lazy-pi-sdk.cjs",
-    "data/",
+    "data/pi-official-capabilities.json",
+    "data/official-catalog.json",
+    "data/corpus/",
+    "data/moah/",
+    "data/moah-theme.json",
     "paper/",
-    "*.md",
+    "ARCHITECTURE.md",
+    "BENCHMARK-ITERATION-2.md",
+    "BENCHMARK-RESULTS.md",
+    "CONTRIBUTING.md",
+    "CONTROLLED-COMPARISON.md",
+    "README.it.md",
+    "README.md",
+    "RELEASE_NOTES.md",
+    "REPORT-PREOPTIMIZATION.md",
+    "REPORT.md",
+    "RICH-CATALOG-RESULTS.md",
+    "STREAMING-BASELINE.md",
+    "THIRD_PARTY.md",
+    "VALIDATION.md",
+    "WORKFLOW-EVALUATION.md",
     "LICENSE",
     "CITATION.cff"
   ],
   "type": "module",
   "description": "Model-selected capability catalog and demand-loaded Pi tools",
+  "piConfig": {
+    "name": "moah",
+    "configDir": ".pi"
+  },
   "engines": {
     "node": ">=22.19.0"
   },
   "scripts": {
-    "build": "tsc && node scripts/copy-vendor.mjs",
+    "build": "node scripts/brand-runtime.mjs && tsc && node scripts/copy-vendor.mjs",
     "prepack": "npm run build",
     "check": "tsc --noEmit",
     "test": "tsx --test --test-concurrency=1 test/lean.test.ts test/streaming.test.ts",

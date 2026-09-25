@@ -4,19 +4,41 @@ import { fileURLToPath } from "node:url";
 import { existsSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
-import { readConfig, stateDir, defaultConfig } from "./config.js";
+import { readConfig, writeJson, defaultConfig } from "./config.js";
 import { buildCatalog, readCatalog, nativeArguments } from "./catalog.js";
 import { ApiToolRouter } from "./router.js";
 import { createMoahExtension } from "./pi-extension.js";
 import { measurePreparation } from "./workflow.js";
 import { catalogForRouter, readOfficialCatalog } from "./official-catalog.js";
 import { runSuite } from "./runner.js";
+import { identitySummary } from "./identity.js";
 import { ensureLangSmithDataset, runLangSmithExperiment } from "./langsmith-eval.js";
+import {
+  applySetupEnvironment,
+  applySetupToConfig,
+  codingModelArguments,
+  readSetupSettings,
+  runSetup,
+} from "./setup.js";
 import type { Config } from "./types.js";
 
-async function piMain(args: string[], options?: Record<string, unknown>): Promise<void> {
-  const { main } = await import("./vendor/pi-runtime/index.js");
-  return main(args, options as any);
+async function piMain(args: string[], options?: Record<string, unknown>, useMoahTheme = false): Promise<void> {
+  if (process.env.PI_CODING_AGENT_DIR && !process.env.MOAH_CODING_AGENT_DIR) {
+    process.env.MOAH_CODING_AGENT_DIR = process.env.PI_CODING_AGENT_DIR;
+  }
+  if (process.env.PI_CODING_AGENT_SESSION_DIR && !process.env.MOAH_CODING_AGENT_SESSION_DIR) {
+    process.env.MOAH_CODING_AGENT_SESSION_DIR = process.env.PI_CODING_AGENT_SESSION_DIR;
+  }
+  const runtime = await import("./vendor/pi-runtime/index.js");
+  let runtimeArgs = args;
+  if (useMoahTheme && !args.includes("--no-themes")) {
+    const candidates = [new URL("../data/moah-theme.json", import.meta.url), new URL("../../data/moah-theme.json", import.meta.url)];
+    const themePath = candidates.map(url => fileURLToPath(url)).find(path => existsSync(path));
+    if (!themePath) throw new Error("MoAH terminal theme not found");
+    const selectDefault = !args.includes("--use-theme");
+    runtimeArgs = ["--theme", themePath, ...(selectDefault ? ["--use-theme", "moah"] : []), ...args];
+  }
+  return runtime.main(runtimeArgs, options as any);
 }
 
 function repoProfilesDir(): string {
@@ -28,29 +50,35 @@ function repoProfilesDir(): string {
 }
 
 export async function main(args = process.argv.slice(2)): Promise<void> {
-  const [command = "help", ...rest] = args;
+  const [command = "start", ...rest] = args;
   const cwd = process.cwd();
+  const configPath = resolve(cwd, "moah.config.json");
 
   if (["help", "--help", "-h"].includes(command)) {
-    console.log(`MoAH — lean Pi fork with an API tool router
+    console.log(`MoAH — coding agent with automatic tool routing
 
+  moah                   Set up if needed, then start MoAH
+  setup                  Configure coding and router models again
   init                   Create moah.config.json
   index                  Index local Pi capabilities and verify the bundled corpus
   route <request>        Test the API router against the bundled catalog
   doctor                 Show runtime/router diagnostics
+  about                  Show MoAH and bundled engine versions
   catalog                Show indexed packages
   install <source>       Install a Pi package with Pi's package manager
   list                   List installed Pi packages
   config                 Open Pi's package configuration
+  update                 Show how to update MoAH
+  update --extensions    Update installed Pi extensions
   baseline <profile>     Run a comparison baseline profile
   bench <suite.json>     Run a comparison benchmark suite [--dry-run]
   langsmith dataset <suite.json>          Create/load the LangSmith dataset
   langsmith run <suite.json> <profile>    Run a LangSmith experiment
-  pi [Pi arguments]      Start Pi with MoAH
-  dense [Pi arguments]   Start Pi with every available package loaded natively
+  pi [runtime arguments] Start MoAH with advanced runtime options
+  dense [runtime args]   Start MoAH with every available package loaded natively
 
-Set ${defaultConfig().router.apiKeyEnv} for the router model. The main agent
-model and login remain managed by Pi.`);
+Run moah with no arguments for guided setup. Advanced commands remain available
+for manual configuration and automated workflows.`);
     return;
   }
 
@@ -61,13 +89,58 @@ model and login remain managed by Pi.`);
     return;
   }
 
+  if (command === "about") {
+    if (rest.length) throw new Error("Usage: moah about");
+    console.log(identitySummary());
+    return;
+  }
+
+  if (command === "update" && (rest.length === 0 || rest.some(arg => ["--self", "self", "pi", "--all", "--help", "-h"].includes(arg)))) {
+    console.log("Update MoAH with your package manager. For npm: npm install -g moah-ai@latest");
+    console.log("To update installed extensions only: moah update --extensions");
+    return;
+  }
+
   if (["install", "remove", "update", "list", "config"].includes(command)) {
     if (["install", "remove"].includes(command) && rest.length !== 1) throw new Error(`Usage: moah ${command} <Pi source>`);
     await measurePreparation(cwd, `pi-${command}`, () => piMain([command, ...rest, ...(["install", "remove", "config"].includes(command) ? ["-l"] : [])]));
     return;
   }
 
-  const config = await readConfig(resolve(cwd, "moah.config.json"));
+  if (["start", "setup"].includes(command)) {
+    let configuredNow = command === "setup";
+    let settings = configuredNow ? await runSetup() : await readSetupSettings();
+    if (!settings) {
+      settings = await runSetup();
+      configuredNow = true;
+    }
+
+    const configExists = existsSync(configPath);
+    let config = configExists ? await readConfig(configPath) : defaultConfig();
+    if (configuredNow || !configExists) {
+      config = applySetupToConfig(config, settings);
+      await writeJson(configPath, config);
+    }
+    await applySetupEnvironment(settings);
+
+    console.log("MoAH: preparing project tools...");
+    let catalog;
+    try {
+      catalog = await readCatalog(config, cwd);
+    } catch {
+      catalog = await buildCatalog(config, cwd);
+    }
+    const unavailable = catalog.filter(pkg => pkg.mode === "unavailable");
+    if (unavailable.length) console.warn(`MoAH: ${unavailable.length} optional capabilities unavailable. Run moah doctor for details.`);
+    await piMain(
+      [...nativeArguments(catalog), ...codingModelArguments(settings)],
+      { extensionFactories: [{ name: "moah", factory: createMoahExtension({ cwd, config, catalog }) }] },
+      true,
+    );
+    return;
+  }
+
+  const config = await readConfig(configPath);
 
   if (command === "index") {
     const catalog = await measurePreparation(cwd, "index", () => buildCatalog(config, cwd));
@@ -209,13 +282,16 @@ model and login remain managed by Pi.`);
   }
 
   if (command === "pi") {
+    if (rest[0] === "update") return main(rest);
     const catalog = await loadCatalog();
-    for (const pkg of catalog.filter(pkg => pkg.mode === "unavailable")) {
-      console.warn(`MoAH ${pkg.id}: ${pkg.reason}`);
-    }
+    const settings = await readSetupSettings();
+    if (settings) await applySetupEnvironment(settings);
+    const unavailable = catalog.filter(pkg => pkg.mode === "unavailable");
+    if (unavailable.length) console.warn(`MoAH: ${unavailable.length} optional capabilities unavailable. Run moah doctor for details.`);
     await piMain(
-      [...nativeArguments(catalog), ...rest],
+      [...nativeArguments(catalog), ...(settings ? codingModelArguments(settings) : []), ...rest],
       { extensionFactories: [{ name: "moah", factory: createMoahExtension({ cwd, config, catalog }) }] },
+      true,
     );
     return;
   }

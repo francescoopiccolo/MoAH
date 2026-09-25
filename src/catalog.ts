@@ -1,7 +1,8 @@
 import { readFile, readdir, stat, realpath } from "node:fs/promises";
-import { createReadStream } from "node:fs";
+import { createReadStream, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
 import { resolve, dirname, join, relative, isAbsolute, sep } from "node:path";
 import { stateDir, writeJson } from "./config.js";
 import type { Config, IndexedPackage, PackageSpec, StreamingClass, ToolMetadata } from "./types.js";
@@ -173,6 +174,13 @@ export async function buildCatalog(config: Config, cwd: string): Promise<Indexed
       base.mode = "unavailable";
       packages.push(base);
       continue;
+    }
+    if (trusted && spec.corpusId === "truncated-tool") {
+      const sources = [
+        new URL("../data/moah/rg.ts", import.meta.url),
+        new URL("../../data/moah/rg.ts", import.meta.url),
+      ].map(url => fileURLToPath(url));
+      nativeSource = sources.find(path => existsSync(path)) ?? sources[0];
     }
 
     const requiredExternalDependency: Record<string, string> = {

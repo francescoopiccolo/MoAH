@@ -3,7 +3,9 @@ import type { Config, RouteResult, RouterUsage, ToolCandidate } from "./types.js
 
 const SYSTEM_PROMPT = [
   "You are a tool router for a coding agent.",
-  "Select only tools that are likely needed for the next task.",
+  "Select the smallest sufficient set of optional tools for the next task.",
+  "Do not select an optional tool when an always-available tool already satisfies the request.",
+  "Never select two tools that conflict or provide the same capability when one is sufficient.",
   "Return strict JSON: {\"tools\":[\"tool_name\"]}.",
   "Return an empty array when no optional tool is needed.",
   "Never explain, never invent tool names.",
@@ -36,9 +38,11 @@ export class ApiToolRouter {
             role: "user",
             content: JSON.stringify({
               request: query.slice(0, 4000),
+              alwaysAvailableTools: this.options.baseTools,
               tools: candidates.map(tool => ({
                 name: tool.name,
                 description: tool.description.slice(0, 500),
+                ...(tool.conflicts?.length ? { conflicts: tool.conflicts } : {}),
               })),
             }),
           },
@@ -68,10 +72,17 @@ export class ApiToolRouter {
       throw new Error("Router API returned an invalid tools array");
     }
 
-    const known = new Set(candidates.map(tool => tool.name));
-    const selected = [...new Set(requested as string[])]
-      .filter(name => known.has(name))
-      .slice(0, this.options.maxTools);
+    const byName = new Map(candidates.map(tool => [tool.name, tool]));
+    const selected: string[] = [];
+    for (const name of [...new Set(requested as string[])]) {
+      const candidate = byName.get(name);
+      if (!candidate || selected.length >= this.options.maxTools) continue;
+      const conflicts = new Set(candidate.conflicts ?? []);
+      const clashes = selected.some(existing =>
+        conflicts.has(existing) || (byName.get(existing)?.conflicts ?? []).includes(name),
+      );
+      if (!clashes) selected.push(name);
+    }
     const selectedSet = new Set(selected);
     const ranked = candidates
       .map(tool => ({ name: tool.name, score: selectedSet.has(tool.name) ? 1 : 0 }))

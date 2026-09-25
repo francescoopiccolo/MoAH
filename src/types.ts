@@ -1,6 +1,8 @@
 export interface ToolCandidate {
   name: string;
   description: string;
+  /** Other optional tools that should not be selected in the same route. */
+  conflicts?: string[];
 }
 
 export interface ScoredTool {

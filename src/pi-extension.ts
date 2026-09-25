@@ -1,5 +1,8 @@
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { createHash, randomUUID } from "node:crypto";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { homedir } from "node:os";
+import { spawnSync } from "node:child_process";
 import { Type } from "typebox";
 import type { ExtensionAPI, ExtensionContext, ExtensionFactory } from "./extensions/types.js";
 import { readConfig, stateDir } from "./config.js";
@@ -10,6 +13,7 @@ import { SELECT, isControl, toCandidate, validateSelection } from "./capabilitie
 import { catalogForRouter, readOfficialCatalog } from "./official-catalog.js";
 import { MoahTracer, usageToMetadata } from "./observability.js";
 import { PackageCache } from "./streaming/package-cache.js";
+import { identitySummary } from "./identity.js";
 import type { Config, IndexedPackage, RouteResult, Trace, ToolMetadata } from "./types.js";
 
 function textContent(content: unknown): string {
@@ -19,6 +23,41 @@ function textContent(content: unknown): string {
     .filter((part: any) => part?.type === "text")
     .map((part: any) => part.text)
     .join("\n");
+}
+
+function commandAvailable(name: string): boolean {
+  const probe = spawnSync(process.platform === "win32" ? "where.exe" : "which", [name], {
+    windowsHide: true,
+    stdio: "ignore",
+  });
+  return probe.status === 0;
+}
+
+function containsAgentDefinition(dir: string): boolean {
+  if (!existsSync(dir)) return false;
+  try {
+    return readdirSync(dir, { withFileTypes: true }).some(entry => {
+      if (!entry.isFile() || !entry.name.endsWith(".md")) return false;
+      const source = readFileSync(join(dir, entry.name), "utf8");
+      const frontmatter = source.match(/^---\s*\r?\n([\s\S]*?)\r?\n---/m)?.[1] ?? "";
+      return /^name\s*:\s*.+$/m.test(frontmatter) && /^description\s*:\s*.+$/m.test(frontmatter);
+    });
+  } catch {
+    return false;
+  }
+}
+
+function subagentAvailable(cwd: string): boolean {
+  const agentRoot = process.env.MOAH_CODING_AGENT_DIR || process.env.PI_CODING_AGENT_DIR || join(homedir(), ".pi", "agent");
+  if (containsAgentDefinition(join(agentRoot, "agents"))) return true;
+  let current = cwd;
+  for (;;) {
+    const projectAgentsDir = join(current, ".pi", "agents");
+    if (existsSync(projectAgentsDir)) return containsAgentDefinition(projectAgentsDir);
+    const parent = dirname(current);
+    if (parent === current) return false;
+    current = parent;
+  }
 }
 
 export function createMoahExtension(options: {
@@ -57,10 +96,16 @@ export function createMoahExtension(options: {
     let tracer: MoahTracer | undefined;
     let activeTurnSpan: ReturnType<MoahTracer["child"]>;
     const registeredStreamToolNames = new Set<string>();
+    const runtimeAvailability = new Map<string, boolean>([
+      ["rg", commandAvailable("rg")],
+      ["subagent", subagentAvailable(cwd)],
+    ]);
 
     const allTools = () => pi.getAllTools().filter(tool => !isControl(tool.name));
     const baseNames = () => config.router.baseTools.filter(name => allTools().some(tool => tool.name === name));
     const candidateTools = () => {
+      runtimeAvailability.set("subagent", subagentAvailable(cwd));
+      const available = (name: string) => runtimeAvailability.get(name) !== false;
       const base = new Set(baseNames());
       const known = new Map<string, string>();
       for (const tool of allTools()) {
@@ -72,11 +117,15 @@ export function createMoahExtension(options: {
         }
       }
       const catalogCandidates = officialCandidates
-        .filter(candidate => known.has(candidate.name))
-        .map(candidate => ({ name: candidate.name, description: candidate.description }));
+        .filter(candidate => known.has(candidate.name) && available(candidate.name))
+        .map(candidate => ({
+          name: candidate.name,
+          description: candidate.description,
+          conflicts: candidate.conflicts,
+        }));
       const catalogNames = new Set(catalogCandidates.map(candidate => candidate.name));
       const extras = [...known]
-        .filter(([name]) => !base.has(name) && !catalogNames.has(name))
+        .filter(([name]) => !base.has(name) && !catalogNames.has(name) && available(name))
         .map(([name, description]) => toCandidate({ name, description }, 180));
       return [...catalogCandidates, ...extras];
     };
@@ -351,6 +400,13 @@ export function createMoahExtension(options: {
           lastRoute,
           streaming: packageCache?.snapshot(),
         }, null, 2), "info");
+      },
+    });
+
+    pi.registerCommand("about", {
+      description: "Show MoAH and bundled engine versions",
+      handler: async (_args: string, ctx: ExtensionContext) => {
+        ctx.ui.notify(identitySummary(), "info");
       },
     });
   };
