@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="How MOAH separates available capabilities from tools active in an agent's context.">
+  <title>Architecture — MOAH</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <!--
+  THESIS: MOAH is industrial tool logistics for an agent; the interface refuses generic SaaS cards and makes selection visible at hero scale.
+  OWN-WORLD: Cool paper, near-black ink, safety-orange signals, hard rules, freight labels, and a single crane illustration.
+  STORY: Separate available from active, understand the four runtime states, then compare the three loading strategies.
+  FIRST VIEWPORT: Wordmark and navigation above a direct claim and one large left-to-right system diagram.
+  FORM: Industrial logistics control sheet, grounded candidate 3; seed cd1e3266.
+  FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+  -->
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="../index.html" aria-label="MOAH home"><span aria-hidden="true"></span>MOAH</a>
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="https://github.com/francescoopiccolo/MoAH" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="../benchmark/index.html">Benchmark</a>
+      <a href="index.html" aria-current="page">Architecture</a>
+    </nav>
+  </header>
+
+  <main id="content" class="inner-page">
+    <section class="page-hero" aria-labelledby="architecture-title">
+      <h1 id="architecture-title">Only load what<br>you need.</h1>
+      <p>MOAH separates the tools an agent <em>can use</em> from the tools currently exposed to the model. Its runtime, derived from Pi, ships inside the npm package; <code>moah</code> starts the harness directly.</p>
+    </section>
+
+    <section class="architecture-diagram" aria-label="MOAH routing architecture">
+      <div class="diagram-column library-column">
+        <p class="diagram-label">Available</p>
+        <p class="diagram-sub">tool library</p>
+        <div class="tool-stack">
+          <span>git</span><span>browser</span><span>test</span><span>search</span><span>python</span><span>...</span>
+        </div>
+      </div>
+      <div class="route-line" aria-hidden="true"><span></span><svg viewBox="0 0 70 14"><path d="M0 7h65M58 1l7 6-7 6"/></svg></div>
+      <div class="diagram-column router-column">
+        <p class="diagram-label">Routed</p>
+        <p class="diagram-sub">MOAH router</p>
+        <div class="router-core"><span>M</span><small>select</small></div>
+      </div>
+      <div class="route-line" aria-hidden="true"><span></span><svg viewBox="0 0 70 14"><path d="M0 7h65M58 1l7 6-7 6"/></svg></div>
+      <div class="diagram-column active-column">
+        <p class="diagram-label">Active</p>
+        <p class="diagram-sub">context</p>
+        <div class="tool-stack active-stack">
+          <span>git</span><span>test</span><span class="accent-tool">browser</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="states-section" aria-labelledby="states-title">
+      <h2 id="states-title">Four states.</h2>
+      <div class="states-list">
+        <article><h3>Known to router</h3><p>The tool exists and can be selected.</p></article>
+        <article><h3>Loaded in memory</h3><p>The tool is ready without being exposed to the model.</p></article>
+        <article><h3>Active in context</h3><p>The model can see and invoke the tool.</p></article>
+        <article><h3>Executing</h3><p>The tool is currently being used.</p></article>
+      </div>
+    </section>
+
+    <section class="strategies-section" aria-labelledby="strategies-title">
+      <h2 id="strategies-title">Three loading strategies.</h2>
+      <div class="strategy-list">
+        <article><h3>Resident</h3><p>Keep frequently used tools ready.</p></article>
+        <article><h3>On demand</h3><p>Load a tool when the router selects it.</p></article>
+        <article><h3>Prefetch</h3><p>Predict the next useful tool and load it ahead of time.</p></article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

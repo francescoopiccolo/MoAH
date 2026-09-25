@@ -1,14 +1,13 @@
 # MoAH
 
-MoAH è un fork snello di **Pi Agent**. Il loop agente, lo streaming, le
-sessioni, i provider e il login restano quelli di Pi. MoAH aggiunge un solo
-strato: un router API sceglie quali tool opzionali attivare per ogni messaggio
-utente.
+MoAH è un **harness autonomo derivato da Pi Agent**, con un router API che
+sceglie quali tool opzionali attivare per ogni messaggio utente. Il runtime
+agente è incluso nel pacchetto: il comando `moah` avvia direttamente MoAH.
 
-Niente embedding locali, ricerca semantica, crawler di pacchetti pubblici o
-orchestrazione di processi worker. Le estensioni ufficiali restano su disco; il
-router riceve solo descrizioni sintetiche dei tool, non i system prompt o le
-istruzioni del loop agente.
+Le estensioni ufficiali restano su disco; il router riceve solo descrizioni
+sintetiche dei tool, non i system prompt o le istruzioni del loop agente. I
+pacchetti stateless opzionali possono essere caricati in worker temporanei
+quando il router li seleziona.
 
 Vedi [REPORT.md](REPORT.md) per il confronto attuale con Pi e OpenCode.
 
