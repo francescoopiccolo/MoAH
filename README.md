@@ -3,6 +3,8 @@
 MoAH is a **standalone coding-agent harness derived from Pi**, with an
 automatic API tool router and SSD-backed sparse package residency.
 
+[Website and installation options](https://francescoopiccolo.github.io/moah-website/)
+
 You write the prompt. MoAH decides which optional tools the next phase needs,
 activates them, and lets Pi stream the answer. The developer does not need to
 search for tools, install them, or reason about which ones to put into the
@@ -42,6 +44,21 @@ MoAH; Pi does not need to be installed or started separately.
 ```sh
 npm install -g moah-ai
 ```
+
+Other package managers:
+
+```sh
+pnpm add -g moah-ai@0.1.3
+bun add -g moah-ai
+```
+
+All methods run MoAH on Node.js >=22.19. If pnpm's global bin directory has
+not been configured, run `pnpm setup` and open a new terminal first.
+The [website](https://francescoopiccolo.github.io/moah-website/) also provides
+PowerShell (Windows) and curl (macOS/Linux) installers. Those require Node.js
+and npm already installed, use a user directory, and configure the user's PATH.
+Their source and installation checks live in the separate
+[website repository](https://github.com/francescoopiccolo/moah-website).
 
 Then, from the project you want to work on:
 

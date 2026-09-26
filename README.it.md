@@ -4,6 +4,8 @@ MoAH è un **harness autonomo derivato da Pi Agent**, con un router API che
 sceglie quali tool opzionali attivare per ogni messaggio utente. Il runtime
 agente è incluso nel pacchetto: il comando `moah` avvia direttamente MoAH.
 
+[Sito e metodi di installazione](https://francescoopiccolo.github.io/moah-website/)
+
 Le estensioni ufficiali restano su disco; il router riceve solo descrizioni
 sintetiche dei tool, non i system prompt o le istruzioni del loop agente. I
 pacchetti stateless opzionali possono essere caricati in worker temporanei
@@ -35,6 +37,21 @@ MoAH e non deve essere installato o avviato separatamente.
 ```sh
 npm install -g moah-ai
 ```
+
+Con altri package manager:
+
+```sh
+pnpm add -g moah-ai@0.1.3
+bun add -g moah-ai
+```
+
+Tutti i metodi richiedono Node.js >=22.19. Se pnpm non ha ancora configurato
+la cartella dei comandi globali, esegui `pnpm setup` e apri un nuovo terminale.
+Sul [sito](https://francescoopiccolo.github.io/moah-website/) trovi anche gli
+installer PowerShell (Windows) e curl (macOS/Linux): richiedono Node.js e npm
+già installati, usano una cartella personale e configurano il PATH dell'utente.
+Codice degli installer e verifiche sono nella
+[repo separata del sito](https://github.com/francescoopiccolo/moah-website).
 
 Nel progetto su cui lavorare:
 
