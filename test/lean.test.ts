@@ -159,7 +159,7 @@ test("MoAH loads its corrected rg wrapper while preserving the official source",
   try {
     const catalog = await buildCatalog(defaultConfig(), dir);
     const rg = catalog.find(pkg => pkg.corpusId === "truncated-tool");
-    assert.equal(rg?.mode, "native");
+    assert.equal(rg?.mode, "native", rg?.reason);
     assert.match(rg!.entry, /truncated-tool\.ts$/);
     assert.match(rg!.nativeSource, /data[\\/]moah[\\/]rg\.ts$/);
   } finally {

@@ -1,3 +1,5 @@
 * text=auto
+# This immutable corpus is verified by byte hashes; checkout must preserve it.
+data/corpus/** -text
 *.png binary
 paper/figures/*.svg linguist-generated=true
