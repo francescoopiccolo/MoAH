@@ -11,6 +11,10 @@ jobs:
         with:
           node-version: '24'
           cache: npm
+      - name: Install ripgrep for tool catalog and search tests
+        run: |
+          choco install ripgrep -y --no-progress
+          rg --version
       - run: npm ci
       - run: npm run build
       # Initialize CIM outside the short subprocess test; do not change execution policy.
